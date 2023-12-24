@@ -1,14 +1,10 @@
 import React from "react";
 import styles from "./StatInfoBox.module.css";
 import DOMPurify from "dompurify";
+import { StatInfo } from "../../types/InfoBoxProps";
 
 type StatInfoBoxProps = {
-    stat?: {
-        type: string;
-        header: string;
-        description: string;
-        mainBody: string;
-    };
+    stat?: StatInfo;
 };
 
 // stat = {

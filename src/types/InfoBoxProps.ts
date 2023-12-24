@@ -5,6 +5,13 @@ export type MiniChampionInfo = {
     traits: string[];
 };
 
+export type StatInfo = {
+    type: string;
+    header: string;
+    description: string;
+    mainBody: string;
+};
+
 export type AbilityInfo = {
     champion: string;
     name: string;
