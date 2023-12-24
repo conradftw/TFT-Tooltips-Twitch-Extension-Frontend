@@ -1,0 +1,79 @@
+.abilityInfoBox {
+    border: 1px solid black;
+    border: 2px solid #715b31;
+
+    background-color: #061217;
+
+    position: absolute;
+
+    top: calc((346 / 1080) * 100%);
+    right: calc((245 / 1920) * 100%);
+
+    width: calc((713 / 1920) * 100%);
+    min-height: 25%;
+    max-height: 60%;
+}
+
+/* .abilityInfoBox img {
+    margin-bottom: 0%;
+    margin: 1%;
+
+    margin: 0 0.5% -0.4%;
+
+    width: 2.2%;
+} */
+
+.header {
+    max-height: 30%;
+    width: 100%;
+
+    display: flex;
+    padding: 1%;
+}
+
+.abilityIcon {
+    margin: 0;
+    width: 10%;
+    height: 10%;
+}
+
+.abilityName {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-left: 2%;
+
+    margin-top: 0;
+
+    font-weight: bold;
+}
+
+.mainBody {
+    text-align: left;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.mainBody img {
+    margin-bottom: 0%;
+    margin: 1%;
+
+    margin: 0 0.5% -0.4%;
+
+    width: 2.2%;
+}
+
+.details {
+    text-align: left;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.details img {
+    margin-bottom: 0%;
+    margin: 1%;
+
+    margin: 0 0.5% -0.4%;
+
+    width: 2.2%;
+}

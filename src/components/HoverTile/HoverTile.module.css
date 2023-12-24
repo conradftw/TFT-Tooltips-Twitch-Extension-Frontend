@@ -1,0 +1,19 @@
+.traitTile {
+    background-color: rgba(255, 251, 0, 0.1);
+    border: 1px solid black;
+    height: 9.21348%;
+    height: calc((41 / 445) * 100%);
+    /* Just realzied i can't do this unless I support multiple resolutions */
+}
+
+.shopTile {
+    background-color: rgba(255, 238, 0, 0.5);
+    border: 1px solid rgb(0, 0, 0);
+    height: 9.21348%;
+    height: 9.21348%;
+
+    height: 100%;
+
+    width: 19.1%;
+    /* Just realzied i can't do this unless I support multiple resolutions */
+}

@@ -1,0 +1,24 @@
+.traitsList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* background-color: pink; */
+    background-color: rgba(255, 0, 0, 0.1);
+    /* margin-top: 100%; */
+    position: absolute;
+    top: 26.6666%;
+    top: calc((288 / 1080) * 100%);
+    width: 10%;
+
+    height: 41.2037%;
+    height: calc((445 / 1080) * 100%);
+}
+
+.traitRow {
+    background-color: rgba(0, 255, 0, 0.1);
+    border: 1px solid black;
+    height: 9.21348%;
+    height: calc((41 / 445) * 100%);
+
+    /* Just realzied i can't do this unless I support multiple resolutions */
+}

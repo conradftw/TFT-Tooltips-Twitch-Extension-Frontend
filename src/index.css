@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    /* background-color: black; */
+    font-size: calc(0.1em + 0.8vw);
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
+
+.physicalDamage {
+    color: #e66121;
+}
+
+.magicDamage {
+    color: #0abad3;
+}
+
+.trueDamage {
+    color: #c5f0f1;
+}
+
+.effectText {
+    color: #ecd37b;
+}
+
+.attackDamage {
+    color: #e66121;
+}
+
+.abilityPower {
+    color: #0abad3;
+}
+
+.attackSpeed {
+    color: #f2d87e;
+}
+
+.health {
+    color: #1b8350;
+}
+
+.headliner {
+    color: #96ec01;
+}
+
+.baseStat {
+    color: #54c6e8;
+}
+
+.bonusStat {
+    color: #01d903;
+}
+
+.headlinerText {
+    color: #7dc605;
+}
+
+.blingBonusText {
+    color: #4a4b49;
+}
+
+.toolTipText {
+    color: #4b4c49;
+}
+
+.abilityRatios {
+    float: right;
+    padding-left: 10%;
+}

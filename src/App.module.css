@@ -1,0 +1,85 @@
+.dangerousIcon {
+    background-color: red;
+}
+
+.dangerDiv img {
+    width: 3%;
+}
+
+.testText123 {
+    background-color: black;
+}
+
+.statsTestIcon {
+    /* height: 10%; */
+    width: 0.7%;
+    object-fit: fill;
+}
+
+.App {
+    text-align: center;
+    /* border: 1px solid black; */
+    height: 100vh;
+}
+
+.traitsList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* background-color: pink; */
+    background-color: rgba(255, 0, 0, 0.1);
+    /* margin-top: 100%; */
+    position: absolute;
+    top: 26.6666%;
+    top: calc((288 / 1080) * 100%);
+    width: 10%;
+
+    height: 41.2037%;
+    height: calc((445 / 1080) * 100%);
+}
+
+.testDisplay {
+    color: white;
+    background-color: black;
+}
+
+.shopList {
+    display: flex;
+    justify-content: space-between;
+
+    background-color: rgba(255, 0, 0, 0.1);
+    position: absolute;
+
+    left: 25%;
+
+    bottom: 0.185%;
+    bottom: calc((1 / 540) * 100%);
+
+    height: 13.9815%;
+    height: calc((151 / 1080) * 100%);
+
+    width: 52.0833%;
+    width: calc((1000 / 1920) * 100%);
+}
+
+.unitInfoPortrait {
+    width: 20%;
+    height: 30%;
+}
+
+.testContainer {
+    background-color: black;
+    /* width: 100px; */
+    width: 5%;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.testIcon {
+    width: 1em;
+    height: 1em;
+    /* padding-left: 10px; */
+}
