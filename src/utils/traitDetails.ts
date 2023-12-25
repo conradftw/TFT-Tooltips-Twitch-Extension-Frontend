@@ -14,7 +14,7 @@ type TraitInfoType = {
     }[];
 };
 
-export const traitMapping: {
+export const traitNameVariations: {
     [name: string]: {
         name: string;
         internalName: string;

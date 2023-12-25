@@ -30,6 +30,16 @@ export const expandCompactGamestate = (
 
     gamestate.units = [];
     for (const unit of compactGamestate.u) {
+        const statTypes = [
+            "attack_speed",
+            "ability_power",
+            "armor",
+            "magic_resist",
+            "attack_speed",
+            "crit_chance",
+            "crit_damage",
+        ];
+
         gamestate.units.push({
             name: unit.n,
             bounding_box: {
@@ -51,33 +61,57 @@ export const expandCompactGamestate = (
             currentMana: unit.m,
             totalMana: unit.mt,
 
-            baseAttackDamage: unit.tb,
-            bonusAttackDamagePercent: Math.round(unit.tb * unit.t),
-            totalAttackDamage: Math.round(unit.tb * (1 + unit.t)),
-
-            baseAbilityPower: 100,
-            bonusAbilityPower: unit.u,
-            totalAbilityPower: 100 + unit.u,
-
-            baseArmor: unit.vb,
-            bonusArmor: unit.v,
-            totalArmor: unit.vb + unit.v,
-
-            baseMagicResist: unit.wb,
-            bonusMagicResist: unit.w,
-            totalMagicResist: unit.wb + unit.w,
-
-            baseAttackSpeed: unit.xb,
-            bonusAttackSpeed: 1 + unit.x,
-            totalAttackSpeed: unit.xb * (1 + unit.x),
-
-            baseCritChance: Math.round(0.25 * 100),
-            totalCritChance: Math.round(unit.y * 100),
-            bonusCritChance: Math.round(unit.y * 100) - Math.round(0.25 * 100),
-
-            baseCritDamage: Math.round(1.4 * 100),
-            totalCritDamage: Math.round(unit.z * 100),
-            bonusCritDamage: Math.round(unit.z * 100) - Math.round(1.4 * 100),
+            stats: {
+                attack_damage: {
+                    type: "attack_damage",
+                    displayName: "Attack Damage",
+                    total: Math.round(unit.tb * (1 + unit.t)),
+                    base: unit.tb,
+                    bonus: Math.round(unit.tb * unit.t),
+                },
+                ability_power: {
+                    type: "ability_power",
+                    displayName: "Ability Power",
+                    total: 100 + unit.u,
+                    base: 100,
+                    bonus: unit.u,
+                },
+                armor: {
+                    type: "armor",
+                    displayName: "Armor",
+                    total: unit.vb + unit.v,
+                    base: unit.vb,
+                    bonus: unit.v,
+                },
+                magic_resist: {
+                    type: "magic_resist",
+                    displayName: "Magic Resist",
+                    total: unit.wb + unit.w,
+                    base: unit.wb,
+                    bonus: unit.w,
+                },
+                attack_speed: {
+                    type: "attack_speed",
+                    displayName: "Attack Speed",
+                    total: unit.xb * (1 + unit.x),
+                    base: unit.xb,
+                    bonus: 1 + unit.x,
+                },
+                crit_chance: {
+                    type: "crit_chance",
+                    displayName: "Critical Strike Chance",
+                    total: Math.round(unit.y * 100),
+                    base: Math.round(0.25 * 100),
+                    bonus: Math.round(unit.y * 100) - Math.round(0.25 * 100),
+                },
+                crit_damage: {
+                    type: "crit_damage",
+                    displayName: "Critical Strike Damage",
+                    total: Math.round(unit.z * 100),
+                    base: Math.round(1.4 * 100),
+                    bonus: Math.round(unit.z * 100) - Math.round(1.4 * 100),
+                },
+            },
         });
     }
 

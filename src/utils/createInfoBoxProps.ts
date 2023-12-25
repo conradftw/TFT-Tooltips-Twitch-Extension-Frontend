@@ -1,6 +1,6 @@
-import { TraitType, ShopUnitType } from "../types/Gamestate";
-import { TraitInfo, ShopUnitInfo } from "../types/InfoBoxProps";
-import { traitDetails } from "./traitDetails";
+import { TraitType, ShopUnitType, UnitType } from "../types/Gamestate";
+import { TraitInfo, ShopUnitInfo, UnitInfo } from "../types/InfoBoxProps";
+import { traitDetails, traitNameVariations } from "./traitDetails";
 import { championDetails } from "./championDetails";
 
 export const createTraitInfo = (simpleTrait: TraitType): TraitInfo => {
@@ -31,17 +31,70 @@ export const createShopUnitInfo = (
     return shopUnit;
 };
 
-/*
+export const createUnitInfo = (unit: UnitType): UnitInfo => {
+    const unitInfo = {} as UnitInfo;
 
-ShopUnitType = {
-    cost: number;
-    shopUnitName: string;
+    if (!Object.keys(unit).length) {
+        return unitInfo;
+    }
+
+    const champion = championDetails[unit.name];
+
+    if (champion) {
+        unitInfo.name = champion.name;
+        unitInfo.displayName = champion.displayName;
+        unitInfo.cost = champion.cost;
+        unitInfo.star_level = unit.starLevel;
+
+        unitInfo.traits = [];
+        for (const trait of champion.traits) {
+            unitInfo.traits.push(traitNameVariations[trait]);
+        }
+
+        unitInfo.currentHealth = unit.currentHealth;
+        unitInfo.totalHealth = unit.totalHealth;
+
+        unitInfo.currentMana = unit.currentMana;
+        unitInfo.totalMana = unit.totalMana;
+
+        unitInfo.position_type = champion.position_type;
+        unitInfo.range = unit.currentAttackRange;
+
+        // oh fuck i screwed up, redo this later
+        // change UnitType to be more array based?
+        unitInfo.stats = unit.stats;
+    }
+
+    return unitInfo;
 };
 
-
-ShopUnitInfo
-    champion: string;
+/*
     name: string;
-    mainBody: string;
-
+    displayName: string;
+    cost: number;
+    star_level: number;
+    // traits: string[];
+    traits: {
+        name: string;
+        internalName: string;
+        displayName: string;
+    }[];
+    currentHealth: number;
+    totalHealth: number;
+    currentMana: number;
+    totalMana: number;
+    position_type: "front" | "back";
+    range: number;
+    stats: {
+        type: string; //used in img/${}, needs underscores
+        displayName: string; //attack_damage = Attack Damage
+        total: number;
+        base: number;
+        bonus: number;
+    }[];
+    ability: {
+        name: string;
+        mainBody: string;
+        details: string;
+    };
 */

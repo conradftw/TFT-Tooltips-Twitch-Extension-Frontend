@@ -4,15 +4,20 @@ import TraitInfoBox from "./components/TraitInfoBox/TraitInfoBox";
 import ShopUnitInfoBox from "./components/ShopUnitInfoBox/ShopUnitInfoBox";
 import UnitInfoBox from "./components/UnitInfoBox/UnitInfoBox";
 import AbilityInfoBox from "./components/AbilityInfoBox/AbilityInfoBox";
-import HoverWrapper from "./components/HoverWrapper/HoverWrapper";
 import StatInfoBox from "./components/StatInfoBox/StatInfoBox";
-import { ShopUnitInfo, TraitInfo, AbilityInfo } from "./types/InfoBoxProps";
-import { GamestateType } from "./types/Gamestate";
-import { expandCompactGamestate } from "./utils/expandCompactGamestate";
+import HoverWrapper from "./components/HoverWrapper/HoverWrapper";
+import {
+    ShopUnitInfo,
+    TraitInfo,
+    UnitInfo,
+    AbilityInfo,
+} from "./types/InfoBoxProps";
 import {
     createTraitInfo,
     createShopUnitInfo,
 } from "./utils/createInfoBoxProps";
+import { GamestateType } from "./types/Gamestate";
+import { expandCompactGamestate } from "./utils/expandCompactGamestate";
 
 const zlib = require("react-zlib-js");
 const Buffer = require("buffer/").Buffer;
@@ -40,6 +45,8 @@ function App() {
     const [isTraitListHovered, setIsTraitListHovered] = useState(false);
     const [showTraitInfoBox, setShowTraitInfoBox] = useState(false);
 
+    const [showUnitInfoBox, setShowUnitInfoBox] = useState(false);
+
     // when trait in UnitInfoBox is hovered
     const [hoveredTrait, setHoveredTrait] = useState("");
     const [isUnitTraitsHovered, setIsUnitTraitsHovered] = useState(false);
@@ -49,19 +56,6 @@ function App() {
 
     const [showStatInfoBox, setShowStatInfoBox] = useState(false);
 
-    const [testAbility, setTestAbility] = useState<AbilityInfo>({
-        champion: "",
-        name: "",
-        mainBody: "",
-        details: "",
-    });
-
-    const [testShopUnit, setTestShopUnit] = useState<ShopUnitInfo>({
-        champion: "",
-        name: "",
-        mainBody: "",
-    });
-
     // pubsub states
     const [gamestate, setGamestate] = useState<GamestateType | null>(null);
 
@@ -70,6 +64,8 @@ function App() {
     );
     const [shopUnitToDisplay, setShopUnitToDisplay] =
         useState<ShopUnitInfo | null>(null);
+
+    const [unitToDisplay, setUnitToDisplay] = useState<UnitInfo | null>(null);
 
     console.log("rerender");
 
@@ -148,29 +144,9 @@ function App() {
                 const y_1080 =
                     (event.clientY * 1080) / overlayResolution.height;
 
-                try {
-                    const req = await fetch(
-                        `http://localhost:8000/thepookguy/units?x=${x_1920}&y=${y_1080}`
-                    );
+                setUnitToDisplay(null);
 
-                    console.log(gamestate);
-
-                    if (req.ok) {
-                        const data1 = await req.json();
-
-                        console.log(data1);
-                        if (data1) {
-                            console.log(data1.name);
-                            setTestAbility({
-                                champion: data1.name,
-                                name: data1.ability.name,
-                                mainBody: data1.ability.mainBody,
-                                details: data1.ability.details,
-                            });
-                        }
-                    }
-                } catch (error) {
-                    console.log("There was an error", error);
+                if (gamestate?.units) {
                 }
             }, 300);
         };
@@ -180,7 +156,7 @@ function App() {
         return () => {
             document.removeEventListener("click", handleMouseMove);
         };
-    }, [overlayResolution, gamestate?.units, gamestate]);
+    }, [overlayResolution, gamestate?.units]);
 
     useEffect(() => {
         if (isTraitListHovered && gamestate?.traits) {
@@ -280,7 +256,7 @@ function App() {
 
             <div className={styles.shopList}>{shopTiles}</div>
 
-            {showAbilityInfoBox && <AbilityInfoBox ability={testAbility} />}
+            {showAbilityInfoBox && <AbilityInfoBox />}
 
             {showUnitTraitInfoBox && <TraitInfoBox type="unitTrait" />}
 

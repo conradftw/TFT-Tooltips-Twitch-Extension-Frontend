@@ -30,11 +30,11 @@ export const championDetails: {
             const empoweredDamageRatios = [4.8, 7.2, 24];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const empoweredDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 empoweredDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Blow a kiss at the current target. It deals <span class="magicDamage">${Math.round(
@@ -53,11 +53,11 @@ export const championDetails: {
             const empoweredDamageRatios = [4.8, 7.2, 24];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const empoweredDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 empoweredDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>Damage: <span class="magicDamage">${Math.round(
@@ -98,9 +98,10 @@ export const championDetails: {
             const dashDamageRatios = [0.8, 1.2, 4];
 
             const strikeDamage =
-                unit.totalAttackDamage * strikeDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                strikeDamageRatios[unit.starLevel - 1];
             const dashDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 dashDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Throw a shuriken at the farthest unmarked target, marking them. Dash to every marked enemy, striking them for <span class="physicalDamage">${Math.round(
@@ -119,9 +120,10 @@ export const championDetails: {
             const dashDamageRatios = [0.8, 1.2, 4];
 
             const strikeDamage =
-                unit.totalAttackDamage * strikeDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                strikeDamageRatios[unit.starLevel - 1];
             const dashDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 dashDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>Strike Damage: <span class="physicalDamage">${Math.round(
@@ -167,10 +169,10 @@ export const championDetails: {
             const manaRefundRatios = [0.12, 0.12, 0.2];
 
             const damagePerWave =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 damagePerWaveRatios[unit.starLevel - 1];
             const manaRefund =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 manaRefundRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Deal <span class="physicalDamage">${Math.round(
@@ -191,10 +193,10 @@ export const championDetails: {
             const manaRefundRatios = [0.12, 0.12, 0.2];
 
             const damagePerWave =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 damagePerWaveRatios[unit.starLevel - 1];
             const manaRefund =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 manaRefundRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>Damage Per Wave: <span class="physicalDamage">${Math.round(
@@ -240,9 +242,10 @@ export const championDetails: {
             const damageArmorRatio = [1.5, 1.75, 2];
 
             const totalDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                     damageApRatio[unit.starLevel - 1] +
-                unit.totalArmor * damageArmorRatio[unit.starLevel - 1];
+                unit.stats["armor"].total *
+                    damageArmorRatio[unit.starLevel - 1];
 
             const abilityMainText = `<p><b>Passive:</b> When attacked, gain <b>4</b> Armor (stacks up to 25 times).<br/>
             <br/>
@@ -260,10 +263,11 @@ export const championDetails: {
             const damageArmorRatio = [1.5, 1.75, 2];
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageApRatio[unit.starLevel - 1];
             const armorDamage =
-                unit.totalArmor * damageArmorRatio[unit.starLevel - 1];
+                unit.stats["armor"].total *
+                damageArmorRatio[unit.starLevel - 1];
             const totalDamage = apDamage + armorDamage;
 
             const abilityDetails = `<p>Damage: (<img src="general/stats/ability_power.png"/>) <span class="abilityRatios">[ ${Math.round(
@@ -312,10 +316,10 @@ export const championDetails: {
             const additionalDamageRatio = [1.15, 1.7, 2.55];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatio[unit.starLevel - 1];
             const additionalDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 additionalDamageRatio[unit.starLevel - 1];
 
             const abilityMainText = `<p><b>Passive:</b> After 4 casts, gain <span class="attackSpeed">50%</span> Attack Speed and casts <span class="magicDamage">${Math.round(
@@ -336,10 +340,10 @@ export const championDetails: {
             const additionalDamageRatio = [1.15, 1.7, 2.55];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatio[unit.starLevel - 1];
             const additionalDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 additionalDamageRatio[unit.starLevel - 1];
 
             const abilityDetails = `<p>Damage: <span class="magicDamage">${Math.round(
@@ -385,9 +389,9 @@ export const championDetails: {
             const adRatio = 7.25;
             const percentDamageRatio = 0.1;
 
-            const damage = unit.totalAttackDamage * adRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
             const percentDamage =
-                ((100 + unit.bonusAbilityPower) * percentDamageRatio) / 100;
+                (unit.stats["ability_power"].total * percentDamageRatio) / 100;
             const splashDamage = percentDamage * damage;
 
             const abilityMainText = `<p>Deal <span class="physicalDamage">${Math.round(
@@ -408,9 +412,9 @@ export const championDetails: {
             const adRatio = 7.25;
             const percentDamageRatio = 0.1;
 
-            const damage = unit.totalAttackDamage * adRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
             const percentDamage =
-                ((100 + unit.bonusAbilityPower) * percentDamageRatio) / 100;
+                (unit.stats["ability_power"].total * percentDamageRatio) / 100;
             const splashDamage = percentDamage * damage;
 
             const abilityDetails = `<p>Stun Duration <span class="abilityRatios">[ ${
@@ -459,12 +463,13 @@ export const championDetails: {
             const headlinerDootRatios = [8.5, 1.25, 1.9];
 
             const dootDamage =
-                (100 + unit.bonusAbilityPower) * dootRatios[unit.starLevel - 1];
+                unit.stats["ability_power"].total *
+                dootRatios[unit.starLevel - 1];
             const chimeDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 chimeRatios[unit.starLevel - 1];
             const headlinerDootDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 headlinerDootRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Play a 4-note tune at random using 3 possible notes:<br/>
@@ -491,12 +496,13 @@ export const championDetails: {
             const headlinerDootRatios = [8.5, 1.25, 1.9];
 
             const dootDamage =
-                (100 + unit.bonusAbilityPower) * dootRatios[unit.starLevel - 1];
+                unit.stats["ability_power"].total *
+                dootRatios[unit.starLevel - 1];
             const chimeDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 chimeRatios[unit.starLevel - 1];
             const headlinerDootDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 headlinerDootRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>Doot: <span class="magicDamage">${Math.round(
@@ -543,10 +549,10 @@ export const championDetails: {
             const shieldRatio = [6, 7.5, 20];
 
             const zapDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 zapDamageRatio[unit.starLevel - 1];
             const shield =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 shieldRatio[unit.starLevel - 1];
 
             const abilityMainText = `<p><b>Passive: </b>Deal <span class="magicDamage">${Math.round(
@@ -566,10 +572,10 @@ export const championDetails: {
             const shieldRatio = [6, 7.5, 20];
 
             const zapDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 zapDamageRatio[unit.starLevel - 1];
             const shield =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 shieldRatio[unit.starLevel - 1];
 
             const abilityDetails = `<p>Zap Damage: <span class="magicDamage">${Math.round(
@@ -614,10 +620,11 @@ export const championDetails: {
             const damageAdRatio = [3.9, 3.9, 8];
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageApRatio[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * damageAdRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                damageAdRatio[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityMainText = `<p>Fire shots at the 4 furthest enemies. Shots deal <span class="physicalDamage">${Math.round(
@@ -634,10 +641,11 @@ export const championDetails: {
             const damageAdRatio = [3.9, 3.9, 8];
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageApRatio[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * damageAdRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                damageAdRatio[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityDetails = `<p>Damage: (<img src="general/stats/ability_power.png"/>) <span class="abilityRatios">[ ${Math.round(
@@ -683,8 +691,8 @@ export const championDetails: {
             const damageRatio = 3.2;
             const durationRatio = 0.05;
 
-            const damage = unit.totalAttackDamage * damageRatio;
-            const duration = (100 + unit.bonusAbilityPower) * durationRatio;
+            const damage = unit.stats["attack_damage"].total * damageRatio;
+            const duration = unit.stats["ability_power"].total * durationRatio;
 
             const abilityMainText = `<p>Deal <span class="physicalDamage">${Math.round(
                 damage
@@ -703,8 +711,8 @@ export const championDetails: {
             const damageRatio = 3.2;
             const durationRatio = 0.05;
 
-            const damage = unit.totalAttackDamage * damageRatio;
-            const duration = (100 + unit.bonusAbilityPower) * durationRatio;
+            const damage = unit.stats["attack_damage"].total * damageRatio;
+            const duration = unit.stats["ability_power"].total * durationRatio;
 
             const abilityDetails = `<p>Damage: <span class="physicalDamage">${Math.round(
                 damage
@@ -743,10 +751,10 @@ export const championDetails: {
             const damageRatios = [0.6, 0.9, 1.45];
 
             const shield =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 shieldRatios[unit.starLevel - 1];
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Deal <span class="magicDamage">${Math.round(
@@ -767,10 +775,10 @@ export const championDetails: {
             const damageRatios = [0.6, 0.9, 1.45];
 
             const shield =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 shieldRatios[unit.starLevel - 1];
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>Shield: <span class="effectText">${Math.round(
@@ -816,7 +824,7 @@ export const championDetails: {
             const healPerLevel = [25, 30, 35];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Deal <span class="magicDamage">${Math.round(
@@ -835,7 +843,7 @@ export const championDetails: {
             const healPerLevel = [25, 30, 35];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -882,12 +890,14 @@ export const championDetails: {
             const adWaveDamageRatios = [3.5, 3.5, 7];
 
             const damage =
-                unit.totalAttackDamage * damageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                damageRatios[unit.starLevel - 1];
             const apWaveDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apWaveDamageRatios[unit.starLevel - 1];
             const adWaveDamage =
-                unit.totalAttackDamage * adWaveDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adWaveDamageRatios[unit.starLevel - 1];
             const waveDamage = apWaveDamage + adWaveDamage;
 
             const abilityMainText = `<p>Blink away from the current target and deal <span class="physicalDamage">${Math.round(
@@ -907,12 +917,14 @@ export const championDetails: {
             const adWaveDamageRatios = [3.5, 3.5, 7];
 
             const damage =
-                unit.totalAttackDamage * damageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                damageRatios[unit.starLevel - 1];
             const apWaveDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apWaveDamageRatios[unit.starLevel - 1];
             const adWaveDamage =
-                unit.totalAttackDamage * adWaveDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adWaveDamageRatios[unit.starLevel - 1];
             const waveDamage = apWaveDamage + adWaveDamage;
 
             const abilityDetails = `<p>Damage: <span class="physicalDamage">${Math.round(
@@ -970,11 +982,11 @@ export const championDetails: {
             const maxHealthRatio = 0.1;
 
             const health =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 healthRatios[unit.starLevel - 1];
 
             const damage =
-                unit.totalAttackDamage * adRatio +
+                unit.stats["attack_damage"].total * adRatio +
                 unit.totalHealth * maxHealthRatio;
 
             const abilityMainText = `<p>Gain <span class="health">${Math.round(
@@ -994,11 +1006,11 @@ export const championDetails: {
             const maxHealthRatio = 0.1;
 
             const health =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 healthRatios[unit.starLevel - 1];
 
             const damage =
-                unit.totalAttackDamage * adRatio +
+                unit.stats["attack_damage"].total * adRatio +
                 unit.totalHealth * maxHealthRatio;
 
             const abilityDetails = `<p>Health: <span class="health">${Math.round(
@@ -1042,11 +1054,12 @@ export const championDetails: {
             const adRatios = [3.35, 3.35, 3.35];
 
             const health =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 healthRatios[unit.starLevel - 1];
 
             const damage =
-                unit.totalAttackDamage * adRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Leap over the current target and transform into Mega Gnar for the rest of combat, gaining <span class="health">${Math.round(
                 health
@@ -1064,11 +1077,12 @@ export const championDetails: {
             const adRatios = [3.35, 3.35, 3.35];
 
             const health =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 healthRatios[unit.starLevel - 1];
 
             const damage =
-                unit.totalAttackDamage * adRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>Health: <span class="health">${Math.round(
                 health
@@ -1112,7 +1126,7 @@ export const championDetails: {
             const damageRatios = [1.5, 2.25, 3.5];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p> Heal <span class="health">${
@@ -1133,7 +1147,7 @@ export const championDetails: {
             const damageRatios = [1.5, 2.25, 3.5];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>Heal: <span class="health">${Math.round(
@@ -1178,7 +1192,7 @@ export const championDetails: {
         getAbilityMainText: (unit: UnitType): string => {
             const adRatio = 2;
 
-            const damage = unit.totalAttackDamage * adRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
 
             const abilityMainText = `<p><b>Passive:</b> On entrance, grant all allies <span class="effectText">15%</span> Attack Speed for the rest of combat.<br/>
             <br/>
@@ -1192,7 +1206,7 @@ export const championDetails: {
         getAbilityDetails: (unit: UnitType): string => {
             const adRatio = 2;
 
-            const damage = unit.totalAttackDamage * adRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
 
             const abilityDetails = `<p>Damage: <span class="physicalDamage">${Math.round(
                 damage
@@ -1228,9 +1242,9 @@ export const championDetails: {
 
             const tentacleDamage =
                 tentacleDamageRatios[unit.starLevel - 1] *
-                (unit.totalArmor + unit.totalMagicResist);
+                (unit.stats["armor"].total + unit.stats["magic_resist"].total);
             const circleDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 circleDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p><b>Passive:</b>: Every 3 seconds, Illaoi's tentacles deal <span class="magicDamage">${Math.round(
@@ -1255,9 +1269,9 @@ export const championDetails: {
 
             const tentacleDamage =
                 tentacleDamageRatios[unit.starLevel - 1] *
-                (unit.totalArmor + unit.totalMagicResist);
+                (unit.stats["armor"].total + unit.stats["magic_resist"].total);
             const circleDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 circleDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>Damage <img src="general/stats/armor.png"/> <img src="general/stats/magic_resist.png"/> <span class="abilityRatios">[ ${Math.round(
@@ -1317,10 +1331,10 @@ export const championDetails: {
             const range = 1 + Math.round(unit.currentAttackRange / 240);
 
             const slamDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 slamDamageRatios[unit.starLevel - 1];
             const spinDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 spinDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Leap at the highest Health enemy within ${range} (<img src="general/hex_range.png"/>) hexes and deal <span class="magicDamage">${Math.round(
@@ -1340,10 +1354,10 @@ export const championDetails: {
             const range = 1 + Math.round(unit.currentAttackRange / 240);
 
             const slamDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 slamDamageRatios[unit.starLevel - 1];
             const spinDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 spinDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -1392,10 +1406,11 @@ export const championDetails: {
             const adDamageRatio = [0.6, 0.6, 4.44, 4.44];
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apDamageRatio[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * adDamageRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatio[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityMainText = `<p><b>Passive:</b> Attacks generate <span class="effectText">10</span> additional Mana. If your bench has 4 Grand Finale Rifles, begin conducting instead of attacking. Each Rifle fires at the same rate as the Maestro and deals <span class="physicalDamage">${Math.round(
@@ -1417,10 +1432,11 @@ export const championDetails: {
             const adDamageRatio = [0.6, 0.6, 4.44, 4.44];
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apDamageRatio[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * adDamageRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatio[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityDetails = `<p>
@@ -1478,8 +1494,8 @@ export const championDetails: {
             const adRatio = 0.5;
 
             const attackSpeed =
-                (100 + unit.bonusAbilityPower) * attackSpeedRatio;
-            const damage = unit.totalAttackDamage * adRatio;
+                unit.stats["ability_power"].total * attackSpeedRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
 
             const abilityMainText = `<p><b>Passive Minigun:</b> Attacks grant <span class="attackSpeed">${Math.round(
                 attackSpeed
@@ -1500,8 +1516,8 @@ export const championDetails: {
             const adRatio = 0.5;
 
             const attackSpeed =
-                (100 + unit.bonusAbilityPower) * attackSpeedRatio;
-            const damage = unit.totalAttackDamage * adRatio;
+                unit.stats["ability_power"].total * attackSpeedRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
 
             const abilityDetails = `<p>Attack Speed: <span class="attackSpeed">${Math.round(
                 attackSpeed
@@ -1543,10 +1559,11 @@ export const championDetails: {
             const adDamageRatio = [2.8, 2.8, 2.85];
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apDamageRatio[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * adDamageRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatio[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityMainText = `<p>Dash up to <span class="effectText">2</span> hexes and fire a missile at the current target. It deals <span class="physicalDamage">${Math.round(
@@ -1563,10 +1580,11 @@ export const championDetails: {
             const adDamageRatio = [2.8, 2.8, 2.85];
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apDamageRatio[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * adDamageRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatio[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityDetails = `<p>
@@ -1615,7 +1633,7 @@ export const championDetails: {
             const damageRatios = [2.2, 3.3, 10];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p> Deal <span class="magicDamage">${Math.round(
@@ -1631,7 +1649,7 @@ export const championDetails: {
             const damageRatios = [2.2, 3.3, 10];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -1668,7 +1686,7 @@ export const championDetails: {
             const damageRatios = [1.4, 2.1, 3.15];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Throw a blade at the current target that bounces 3 times, dealing <span class="magicDamage">${Math.round(
@@ -1686,7 +1704,7 @@ export const championDetails: {
             const damageRatios = [1.4, 2.1, 3.15];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -1726,10 +1744,10 @@ export const championDetails: {
             const finaleDamageRatios = [1.9, 2.85, 4.3];
 
             const bonusDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 bonusDamageRatios[unit.starLevel - 1];
             const finaleDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 finaleDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>For 5 seconds, attacks deal <span class="magicDamage">${Math.round(
@@ -1750,10 +1768,10 @@ export const championDetails: {
             const finaleDamageRatios = [1.9, 2.85, 4.3];
 
             const bonusDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 bonusDamageRatios[unit.starLevel - 1];
             const finaleDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 finaleDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -1800,7 +1818,7 @@ export const championDetails: {
             const damageRatios = [4, 6, 40];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Dash, then deal <span class="magicDamage">${Math.round(
@@ -1818,7 +1836,7 @@ export const championDetails: {
             const damageRatios = [4, 6, 40];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -1857,7 +1875,7 @@ export const championDetails: {
             const damageRatios = [1.45, 2.15, 3.25];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Discharge 2 Jolts over 2 seconds. Each Jolt deals <span class="magicDamage">${Math.round(
@@ -1875,7 +1893,7 @@ export const championDetails: {
             const damageRatios = [1.45, 2.15, 3.25];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -1916,13 +1934,13 @@ export const championDetails: {
             const adRatio = 8;
 
             const damageReductionAp =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageReductionApRatio[unit.starLevel - 1];
             const totalDamageReduction = Math.min(
                 75,
                 baseDamageReduction + damageReductionAp
             );
-            const damage = unit.totalAttackDamage * adRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
 
             const abilityMainText = `<p>Enter a defensive stance, reducing damage taken by <span class="effectText">${Math.round(
                 totalDamageReduction
@@ -1941,13 +1959,13 @@ export const championDetails: {
             const adRatio = 8;
 
             const damageReductionAp =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageReductionApRatio[unit.starLevel - 1];
             const totalDamageReduction = Math.min(
                 75,
                 baseDamageReduction + damageReductionAp
             );
-            const damage = unit.totalAttackDamage * adRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
 
             const abilityDetails = `<p>
             Damage Reduction <img src="general/stats/ability_power.png"/> <span class="abilityRatios">[ ${Math.round(
@@ -1991,15 +2009,15 @@ export const championDetails: {
             const allyHealRatios = [0.9, 1.1, 1.3];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const selfHeal =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 selfHealRatios[unit.starLevel - 1];
 
             const allyHeal =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 allyHealRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Deal <span class="magicDamage">${Math.round(
@@ -2021,15 +2039,15 @@ export const championDetails: {
             const allyHealRatios = [0.9, 1.1, 1.3];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const selfHeal =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 selfHealRatios[unit.starLevel - 1];
 
             const allyHeal =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 allyHealRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -2087,13 +2105,16 @@ export const championDetails: {
             const shotsPerAttackSpeed = 0.2;
             const numberOfShots =
                 baseNumberOfShots +
-                Math.floor(unit.bonusAttackSpeed / shotsPerAttackSpeed);
+                Math.floor(
+                    unit.stats["attack_speed"].bonus / shotsPerAttackSpeed
+                );
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apDamageRatios[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * adDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatios[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityMainText = `<p>Fire <span class="attackSpeed">${Math.round(
@@ -2120,13 +2141,16 @@ export const championDetails: {
             const shotsPerAttackSpeed = 0.2;
             const numberOfShots =
                 baseNumberOfShots +
-                Math.floor(unit.bonusAttackSpeed / shotsPerAttackSpeed);
+                Math.floor(
+                    unit.stats["attack_speed"].bonus / shotsPerAttackSpeed
+                );
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apDamageRatios[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * adDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatios[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityDetails = `<p>
@@ -2189,13 +2213,13 @@ export const championDetails: {
             const thirdCastDamageRatios = [1.2, 1.8, 2.8];
 
             const firstTargetDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 firstTargetDamageRatios[unit.starLevel - 1];
             const secondTargetDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 secondTargetDamageRatios[unit.starLevel - 1];
             const thirdCastDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 thirdCastDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Fire a bolt toward the current target. It deals <span class="magicDamage">${Math.round(
@@ -2218,13 +2242,13 @@ export const championDetails: {
             const thirdCastDamageRatios = [1.2, 1.8, 2.8];
 
             const firstTargetDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 firstTargetDamageRatios[unit.starLevel - 1];
             const secondTargetDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 secondTargetDamageRatios[unit.starLevel - 1];
             const thirdCastDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 thirdCastDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -2280,7 +2304,7 @@ export const championDetails: {
             const damageRatio = [2.3, 3.45, 5.5];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatio[unit.starLevel - 1];
 
             const abilityMainText = `<p>Fire a beam at the farthest enemy, dealing <span class="magicDamage">${Math.round(
@@ -2296,7 +2320,7 @@ export const championDetails: {
             const damageRatio = [2.3, 3.45, 5.5];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatio[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -2335,14 +2359,14 @@ export const championDetails: {
             const apRatio = 0.4;
 
             const primaryDamage =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 primaryDamageRatios[unit.starLevel - 1];
 
             const secondaryDamage =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 secondaryDamageRatios[unit.starLevel - 1];
 
-            const bonusAs = (100 + unit.bonusAbilityPower) * apRatio;
+            const bonusAs = unit.stats["ability_power"].total * apRatio;
 
             const abilityMainText = `<p>Deal <span class="physicalDamage">${Math.round(
                 primaryDamage
@@ -2363,14 +2387,14 @@ export const championDetails: {
             const apRatio = 0.4;
 
             const primaryDamage =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 primaryDamageRatios[unit.starLevel - 1];
 
             const secondaryDamage =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 secondaryDamageRatios[unit.starLevel - 1];
 
-            const bonusAs = (100 + unit.bonusAbilityPower) * apRatio;
+            const bonusAs = unit.stats["ability_power"].total * apRatio;
 
             const abilityDetails = `<p>
             Primary Damage: <span class="physicalDamage">${Math.round(
@@ -2420,15 +2444,15 @@ export const championDetails: {
             const finaleDamageRatios = [2, 3, 4.8];
 
             const shield =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 shieldRatios[unit.starLevel - 1];
 
             const zoneDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 zoneDamageRatios[unit.starLevel - 1];
 
             const finaleDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 finaleDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p> Gain a <span class="effectText">${Math.round(
@@ -2452,15 +2476,15 @@ export const championDetails: {
             const finaleDamageRatios = [2, 3, 4.8];
 
             const shield =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 shieldRatios[unit.starLevel - 1];
 
             const zoneDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 zoneDamageRatios[unit.starLevel - 1];
 
             const finaleDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 finaleDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -2515,7 +2539,7 @@ export const championDetails: {
             const damageRatio = [3, 4.5, 6.75];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatio[unit.starLevel - 1];
 
             const abilityMainText = `<p>Deal <span class="magicDamage">${Math.round(
@@ -2531,7 +2555,7 @@ export const championDetails: {
             const damageRatio = [3, 4.5, 6.75];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatio[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -2569,7 +2593,7 @@ export const championDetails: {
             const damageRatio = [0.7, 0.9, 1.15];
 
             const shield =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 shieldRatio[unit.starLevel - 1];
 
             const abilityMainText = `<p>Cosplay the highest Health ally and gain a <span class="effectText">${Math.round(
@@ -2588,7 +2612,7 @@ export const championDetails: {
             const damageRatio = [0.7, 0.9, 1.15];
 
             const shield =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 shieldRatio[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -2632,7 +2656,8 @@ export const championDetails: {
             const healRatios = [0.2, 0.25, 0.35];
 
             const heal =
-                (100 + unit.bonusAbilityPower) * healRatios[unit.starLevel - 1];
+                unit.stats["ability_power"].total *
+                healRatios[unit.starLevel - 1];
 
             const bonusAS = unit.totalHealth * bonusAttackSpeedRatio;
 
@@ -2652,7 +2677,8 @@ export const championDetails: {
             const healRatios = [0.2, 0.25, 0.35];
 
             const heal =
-                (100 + unit.bonusAbilityPower) * healRatios[unit.starLevel - 1];
+                unit.stats["ability_power"].total *
+                healRatios[unit.starLevel - 1];
 
             const bonusAS = unit.totalHealth * bonusAttackSpeedRatio;
 
@@ -2698,13 +2724,13 @@ export const championDetails: {
             const adRatio = 2;
 
             const damageReductionAp =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageReductionApRatio[unit.starLevel - 1];
             const totalDamageReduction = Math.min(
                 70,
                 baseDamageReduction + damageReductionAp
             );
-            const damage = unit.totalAttackDamage * adRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
 
             const abilityMainText = `<p>Reduce damage taken by <span class="effectText">${Math.round(
                 totalDamageReduction
@@ -2723,13 +2749,13 @@ export const championDetails: {
             const adRatio = 2;
 
             const damageReductionAp =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageReductionApRatio[unit.starLevel - 1];
             const totalDamageReduction = Math.min(
                 70,
                 baseDamageReduction + damageReductionAp
             );
-            const damage = unit.totalAttackDamage * adRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
 
             const abilityDetails = `<p>
             Damage Reduction <img src="general/stats/ability_power.png"/> <span class="abilityRatios">[ ${Math.round(
@@ -2776,11 +2802,12 @@ export const championDetails: {
             const apHealRatio = 0.06;
 
             const damage =
-                unit.totalAttackDamage * damageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                damageRatios[unit.starLevel - 1];
             const bonusDamage = unit.totalHealth * bonusAdRatio;
 
             const heal =
-                (((100 + unit.bonusAbilityPower) * apHealRatio) / 100) *
+                ((unit.stats["ability_power"].total * apHealRatio) / 100) *
                 unit.totalHealth;
 
             const abilityMainText = `<p><b>Passive:</b> Gain Attack Damage based on bonus Health. (Current: <span class="effectText">${Math.round(
@@ -2807,11 +2834,12 @@ export const championDetails: {
             const apHealRatio = 0.06;
 
             const damage =
-                unit.totalAttackDamage * damageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                damageRatios[unit.starLevel - 1];
             const bonusDamage = unit.totalHealth * bonusAdRatio;
 
             const heal =
-                (((100 + unit.bonusAbilityPower) * apHealRatio) / 100) *
+                ((unit.stats["ability_power"].total * apHealRatio) / 100) *
                 unit.totalHealth;
 
             const abilityDetails = `<p>Damage: <span class="physicalDamage">${Math.round(
@@ -2861,7 +2889,8 @@ export const championDetails: {
             const apRatio = [0.75, 0.75, 5];
 
             const adDamage =
-                unit.totalAttackDamage * adDamageRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatio[unit.starLevel - 1];
             const bonusTrueDamage = apRatio[unit.starLevel - 1] * adDamage;
 
             const abilityMainText = `<p>Copy <span class="effectText">${
@@ -2887,7 +2916,8 @@ export const championDetails: {
             const apRatio = [0.75, 0.75, 5];
 
             const adDamage =
-                unit.totalAttackDamage * adDamageRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatio[unit.starLevel - 1];
             const bonusTrueDamage = apRatio[unit.starLevel - 1] * adDamage;
 
             const abilityDetails = `<p>
@@ -2950,10 +2980,10 @@ export const championDetails: {
             const adDamageRatio = 1;
 
             const shield =
-                unit.totalAttackDamage * adShieldRatio +
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["attack_damage"].total * adShieldRatio +
+                unit.stats["ability_power"].total *
                     shieldRatios[unit.starLevel - 1];
-            const damage = unit.totalAttackDamage * adDamageRatio;
+            const damage = unit.stats["attack_damage"].total * adDamageRatio;
 
             const abilityMainText = `<p>For the next 6 seconds, gain a <span class="effectText">${Math.round(
                 shield
@@ -2972,10 +3002,10 @@ export const championDetails: {
             const adDamageRatio = 1;
 
             const shield =
-                unit.totalAttackDamage * adShieldRatio +
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["attack_damage"].total * adShieldRatio +
+                unit.stats["ability_power"].total *
                     shieldRatios[unit.starLevel - 1];
-            const damage = unit.totalAttackDamage * adDamageRatio;
+            const damage = unit.stats["attack_damage"].total * adDamageRatio;
 
             const abilityDetails = `<p>
             Shield <img src="general/stats/ability_power.png"/> <span class="abilityRatios">[ ${Math.round(
@@ -3023,11 +3053,13 @@ export const championDetails: {
             const bonusAdRatio = 1.1;
 
             const damage =
-                unit.totalAttackDamage * damageRatios[unit.starLevel - 1];
-            const bonusDamage = unit.totalAttackDamage * bonusAdRatio;
+                unit.stats["attack_damage"].total *
+                damageRatios[unit.starLevel - 1];
+            const bonusDamage =
+                unit.stats["attack_damage"].total * bonusAdRatio;
 
             const attackSpeedPerStack =
-                (100 + unit.bonusAbilityPower) * apRatio;
+                unit.stats["ability_power"].total * apRatio;
 
             const abilityMainText = `<p><b>Passive</b>: Attacks that critically strike grant a stack of Style, up to 6 stacks. Each stack grants <span class="attackSpeed">${Math.round(
                 attackSpeedPerStack
@@ -3050,11 +3082,13 @@ export const championDetails: {
             const bonusAdRatio = 1.1;
 
             const damage =
-                unit.totalAttackDamage * damageRatios[unit.starLevel - 1];
-            const bonusDamage = unit.totalAttackDamage * bonusAdRatio;
+                unit.stats["attack_damage"].total *
+                damageRatios[unit.starLevel - 1];
+            const bonusDamage =
+                unit.stats["attack_damage"].total * bonusAdRatio;
 
             const attackSpeedPerStack =
-                (100 + unit.bonusAbilityPower) * apRatio;
+                unit.stats["ability_power"].total * apRatio;
 
             const abilityDetails = `<p>
             Damage <span class="physicalDamage">${Math.round(
@@ -3104,7 +3138,7 @@ export const championDetails: {
             const damageRatios = [1.05, 1.55, 2.25];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Fire a blast of sound at the current target's location. It pulses 3 times, each dealing <span class="magicDamage">${Math.round(
@@ -3122,7 +3156,7 @@ export const championDetails: {
             const damageRatios = [1.05, 1.55, 2.25];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -3162,11 +3196,12 @@ export const championDetails: {
             const healRatios = [0.8, 1.2, 1.6];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const heal =
-                (100 + unit.bonusAbilityPower) * healRatios[unit.starLevel - 1];
+                unit.stats["ability_power"].total *
+                healRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Send a high note to the largest clump of units that hits all units within 1 hex. Enemies take <span class="magicDamage">${Math.round(
                 damage
@@ -3184,11 +3219,12 @@ export const championDetails: {
             const healRatios = [0.8, 1.2, 1.6];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const heal =
-                (100 + unit.bonusAbilityPower) * healRatios[unit.starLevel - 1];
+                unit.stats["ability_power"].total *
+                healRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
             Damage: <span class="magicDamage">${Math.round(
@@ -3236,11 +3272,11 @@ export const championDetails: {
             const shieldGainPerMissingHp = 1;
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const coneDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 coneDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p> Gain a <span class="effectText">${
@@ -3263,11 +3299,11 @@ export const championDetails: {
             const shieldGainPerMissingHp = 1;
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const coneDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 coneDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -3322,7 +3358,7 @@ export const championDetails: {
             const dmgPerAttackRatios = [0.9, 1.35, 7.77];
 
             const damagePerAttack =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 dmgPerAttackRatios[unit.starLevel - 1];
 
             // concussive (damage)
@@ -3394,7 +3430,7 @@ export const championDetails: {
             const dmgPerAttackRatios = [0.9, 1.35, 7.77];
 
             const damagePerAttack =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 dmgPerAttackRatios[unit.starLevel - 1];
 
             // concussive (damage)
@@ -3519,7 +3555,7 @@ export const championDetails: {
             const damageReductionRatios = [0.12, 0.15, 0.25];
 
             const damageReduction =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageReductionRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p><b>Passive:</b> Reduce each instance of incoming damage by <span class="effectText">${Math.round(
@@ -3535,7 +3571,7 @@ export const championDetails: {
             const damageReductionRatios = [0.12, 0.15, 0.25];
 
             const damageReduction =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageReductionRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -3578,7 +3614,7 @@ export const championDetails: {
                 healthRatio * unit.totalHealth;
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Gain a <span class="effectText">${Math.round(
@@ -3602,7 +3638,7 @@ export const championDetails: {
                 healthRatio * unit.totalHealth;
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -3655,7 +3691,7 @@ export const championDetails: {
             const stunDurations = [1.75, 2, 8];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Stun the largest group of nearby enemies for <span class="effectText">${
@@ -3677,7 +3713,7 @@ export const championDetails: {
             const stunDurations = [1.75, 2, 8];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -3729,12 +3765,14 @@ export const championDetails: {
             const baseCardCount = 21;
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const cardCount =
                 baseCardCount +
-                Math.floor(unit.bonusAttackSpeed / bonusAsBreakpoint);
+                Math.floor(
+                    unit.stats["attack_speed"].bonus / bonusAsBreakpoint
+                );
 
             const abilityMainText = `<p>Throw <span class="attackSpeed">${Math.round(
                 cardCount
@@ -3753,12 +3791,14 @@ export const championDetails: {
             const baseCardCount = 21;
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const cardCount =
                 baseCardCount +
-                Math.floor(unit.bonusAttackSpeed / bonusAsBreakpoint);
+                Math.floor(
+                    unit.stats["attack_speed"].bonus / bonusAsBreakpoint
+                );
 
             const abilityDetails = `<p>
             Damage: <span class="magicDamage">${Math.round(
@@ -3798,9 +3838,10 @@ export const championDetails: {
             const initalAdDamageRatio = 2;
             const secondaryMagicDamageRatios = [0.35, 0.5, 0.8];
 
-            const initalAdDamage = unit.totalAttackDamage * initalAdDamageRatio;
+            const initalAdDamage =
+                unit.stats["attack_damage"].total * initalAdDamageRatio;
             const secondaryMagicDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 secondaryMagicDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Throw a bottle at the current target, which deals <span class="physicalDamage">${Math.round(
@@ -3818,9 +3859,10 @@ export const championDetails: {
             const initalAdDamageRatio = 2;
             const secondaryMagicDamageRatios = [0.35, 0.5, 0.8];
 
-            const initalAdDamage = unit.totalAttackDamage * initalAdDamageRatio;
+            const initalAdDamage =
+                unit.stats["attack_damage"].total * initalAdDamageRatio;
             const secondaryMagicDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 secondaryMagicDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -3866,10 +3908,11 @@ export const championDetails: {
             const adDamageRatio = [1.75, 1.75, 1.8];
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apDamageRatio[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * adDamageRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatio[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityMainText = `<p>For 8 seconds, convert bonus Attack Speed to Attack Damage. Attacks deal <span class="physicalDamage">${Math.round(
@@ -3886,10 +3929,11 @@ export const championDetails: {
             const adDamageRatio = [1.75, 1.75, 1.8];
 
             const apDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 apDamageRatio[unit.starLevel - 1];
             const adDamage =
-                unit.totalAttackDamage * adDamageRatio[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                adDamageRatio[unit.starLevel - 1];
             const totalDamage = apDamage + adDamage;
 
             const abilityDetails = `<p>
@@ -3938,7 +3982,7 @@ export const championDetails: {
             const damageRatios = [2.55, 3.8, 6.1];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Send a shadow to the current target that Stuns enemies within 1 hex for 1.5 seconds. Then, it deals <span class="magicDamage">${Math.round(
@@ -3954,7 +3998,7 @@ export const championDetails: {
             const damageRatios = [2.55, 3.8, 6.1];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
             const abilityDetails = `<p>
             Damage: <span class="magicDamage">${Math.round(
@@ -3992,8 +4036,9 @@ export const championDetails: {
             const adRatio = 2.2;
             const empoweredAdRatio = 3.2;
 
-            const damage = unit.totalAttackDamage * adRatio;
-            const empoweredDamage = unit.totalAttackDamage * empoweredAdRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
+            const empoweredDamage =
+                unit.stats["attack_damage"].total * empoweredAdRatio;
 
             const abilityMainText = `<p>
             Deal <span class="physicalDamage">${Math.round(
@@ -4017,8 +4062,9 @@ export const championDetails: {
             const adRatio = 2.2;
             const empoweredAdRatio = 3.2;
 
-            const damage = unit.totalAttackDamage * adRatio;
-            const empoweredDamage = unit.totalAttackDamage * empoweredAdRatio;
+            const damage = unit.stats["attack_damage"].total * adRatio;
+            const empoweredDamage =
+                unit.stats["attack_damage"].total * empoweredAdRatio;
 
             const abilityDetails = `<p>
             Stun Duration <span class="abilityRatios">[ ${stunDurations[0]} / ${
@@ -4074,10 +4120,12 @@ export const championDetails: {
             const durationRatio = 0.05;
 
             const slamDamage =
-                unit.totalAttackDamage * slamRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                slamRatios[unit.starLevel - 1];
             const empoweredDamage =
-                unit.totalAttackDamage * empoweredRatios[unit.starLevel - 1];
-            const duration = (100 + unit.bonusAbilityPower) * durationRatio;
+                unit.stats["attack_damage"].total *
+                empoweredRatios[unit.starLevel - 1];
+            const duration = unit.stats["ability_power"].total * durationRatio;
 
             const abilityMainText = `<p> Slam on a nearby hex. Deal <span class="physicalDamage">${Math.round(
                 slamDamage
@@ -4100,10 +4148,12 @@ export const championDetails: {
             const durationRatio = 0.05;
 
             const slamDamage =
-                unit.totalAttackDamage * slamRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                slamRatios[unit.starLevel - 1];
             const empoweredDamage =
-                unit.totalAttackDamage * empoweredRatios[unit.starLevel - 1];
-            const duration = (100 + unit.bonusAbilityPower) * durationRatio;
+                unit.stats["attack_damage"].total *
+                empoweredRatios[unit.starLevel - 1];
+            const duration = unit.stats["ability_power"].total * durationRatio;
 
             const abilityDetails = `<p>
                 Slam Damage: <span class="physicalDamage">${Math.round(
@@ -4156,8 +4206,8 @@ export const championDetails: {
             const apRatio = 0.2;
             const executeThreshold = 0.15;
 
-            const adDamage = unit.totalAttackDamage * adRatio;
-            const apDamage = (100 + unit.bonusAbilityPower) * apRatio;
+            const adDamage = unit.stats["attack_damage"].total * adRatio;
+            const apDamage = unit.stats["ability_power"].total * apRatio;
             const totalDamage = adDamage + apDamage;
 
             const abilityMainText = `<p> 
@@ -4184,8 +4234,8 @@ export const championDetails: {
             const apRatio = 0.2;
             const executeThreshold = 0.15;
 
-            const adDamage = unit.totalAttackDamage * adRatio;
-            const apDamage = (100 + unit.bonusAbilityPower) * apRatio;
+            const adDamage = unit.stats["attack_damage"].total * adRatio;
+            const apDamage = unit.stats["ability_power"].total * apRatio;
             const totalDamage = adDamage + apDamage;
 
             const abilityDetails = `<p>
@@ -4228,7 +4278,8 @@ export const championDetails: {
             const omnivampRatio = 0.08;
 
             const damage =
-                unit.totalAttackDamage * damageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                damageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>
             Gain stacking Move Speed and <span class="effectText">${Math.round(
@@ -4249,7 +4300,8 @@ export const championDetails: {
             const omnivampRatio = 0.08;
 
             const damage =
-                unit.totalAttackDamage * damageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                damageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
             Damage: <span class="physicalDamage">${Math.round(
@@ -4297,9 +4349,10 @@ export const championDetails: {
             const bigGhoulDamageRatios = [2.5, 2.5, 20];
 
             const ghoulDamage =
-                unit.totalAttackDamage * ghoulDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                ghoulDamageRatios[unit.starLevel - 1];
             const bigGhoulDamage =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 bigGhoulDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>
@@ -4329,9 +4382,10 @@ export const championDetails: {
             const bigGhoulDamageRatios = [2.5, 2.5, 20];
 
             const ghoulDamage =
-                unit.totalAttackDamage * ghoulDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                ghoulDamageRatios[unit.starLevel - 1];
             const bigGhoulDamage =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 bigGhoulDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
@@ -4397,11 +4451,12 @@ export const championDetails: {
             const healRatios = [1, 1.4, 8];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const heal =
-                (100 + unit.bonusAbilityPower) * healRatios[unit.starLevel - 1];
+                unit.stats["ability_power"].total *
+                healRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>Bounce 3 times on nearby enemies. Each bounce deals <span class="magicDamage">${Math.round(
                 damage
@@ -4419,11 +4474,12 @@ export const championDetails: {
             const healRatios = [1, 1.4, 8];
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
 
             const heal =
-                (100 + unit.bonusAbilityPower) * healRatios[unit.starLevel - 1];
+                unit.stats["ability_power"].total *
+                healRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>
             Damage: <span class="magicDamage">${Math.round(
@@ -4469,12 +4525,13 @@ export const championDetails: {
             const healthThresholdRatio = 0.15;
 
             const shadowAttackDamage =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 shadowAttackDamageRatios[unit.starLevel - 1];
             const markDamage =
-                unit.totalAttackDamage * markDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                markDamageRatios[unit.starLevel - 1];
             const healthThreshold =
-                (100 + unit.bonusAbilityPower) * healthThresholdRatio;
+                unit.stats["ability_power"].total * healthThresholdRatio;
 
             const abilityMainText = `<p>
             Mark the current target and spawn an untargetable Shadow with <span class="effectText">${Math.round(
@@ -4496,12 +4553,13 @@ export const championDetails: {
             const healthThresholdRatio = 0.15;
 
             const shadowAttackDamage =
-                unit.totalAttackDamage *
+                unit.stats["attack_damage"].total *
                 shadowAttackDamageRatios[unit.starLevel - 1];
             const markDamage =
-                unit.totalAttackDamage * markDamageRatios[unit.starLevel - 1];
+                unit.stats["attack_damage"].total *
+                markDamageRatios[unit.starLevel - 1];
             const healthThreshold =
-                (100 + unit.bonusAbilityPower) * healthThresholdRatio;
+                unit.stats["ability_power"].total * healthThresholdRatio;
 
             const abilityDetails = `<p>
             Shadow Attack Damage: <span class="effectText">${Math.round(
@@ -4555,10 +4613,10 @@ export const championDetails: {
             const subsequentSplits = 2;
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
             const splitDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 splitDamageRatios[unit.starLevel - 1];
 
             const abilityMainText = `<p>
@@ -4582,10 +4640,10 @@ export const championDetails: {
             const subsequentSplits = 2;
 
             const damage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 damageRatios[unit.starLevel - 1];
             const splitDamage =
-                (100 + unit.bonusAbilityPower) *
+                unit.stats["ability_power"].total *
                 splitDamageRatios[unit.starLevel - 1];
 
             const abilityDetails = `<p>

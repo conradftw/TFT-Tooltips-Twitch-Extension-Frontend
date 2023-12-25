@@ -15,6 +15,7 @@ type UnitInfoBoxProps = {
 const UnitInfoBox = ({
     unit = {
         name: "ahri",
+        displayName: "Ahri",
         cost: 2,
         star_level: 2,
         // traits: ["mixmaster", "spellweaver", "kda"],
@@ -35,20 +36,71 @@ const UnitInfoBox = ({
                 displayName: "K/DA",
             },
         ],
-        current_health: 70,
-        max_health: 100,
-        current_mana: 50,
-        max_mana: 100,
+        currentHealth: 70,
+        totalHealth: 100,
+        currentMana: 50,
+        totalMana: 100,
         position_type: "front",
         range: 4,
+        // stats: {
+        //     attack_damage: 10,
+        //     ability_power: 20,
+        //     armor: 30,
+        //     magic_resist: 40,
+        //     attack_speed: 50,
+        //     crit_chance: 60,
+        //     crit_damage: 70,
+        // },
         stats: {
-            attack_damage: 10,
-            ability_power: 20,
-            armor: 30,
-            magic_resist: 40,
-            attack_speed: 50,
-            crit_chance: 60,
-            crit_damage: 70,
+            attack_damage: {
+                type: "attack_damage",
+                displayName: "Attack Damage",
+                total: 128,
+                base: 55,
+                bonus: 73,
+            },
+            ability_power: {
+                type: "ability_power",
+                displayName: "Ability Power",
+                total: 100,
+                base: 100,
+                bonus: 0,
+            },
+            armor: {
+                type: "armor",
+                displayName: "Armor",
+                total: 15,
+                base: 15,
+                bonus: 0,
+            },
+            magic_resist: {
+                type: "magic_resist",
+                displayName: "Magic Resist",
+                total: 55,
+                base: 15,
+                bonus: 40,
+            },
+            attack_speed: {
+                type: "attack_speed",
+                displayName: "Attack Speed",
+                total: 1.05,
+                base: 0.7,
+                bonus: 1.5,
+            },
+            crit_chance: {
+                type: "crit_chance",
+                displayName: "Critical Strike Chance",
+                total: 80,
+                base: 25,
+                bonus: 55,
+            },
+            crit_damage: {
+                type: "crit_damage",
+                displayName: "Critical Strike Damage",
+                total: 140,
+                base: 140,
+                bonus: 0,
+            },
         },
         ability: {
             name: "Escalation",
@@ -100,21 +152,22 @@ const UnitInfoBox = ({
         "crit_damage",
     ];
 
-    for (const stat of statTypes) {
+    for (let i = 0; i < 7; i++) {
+        const stat = unit.stats[statTypes[i]];
         const statItem = (
             <HoverWrapper
                 type="statItem"
                 setIsHovered={onHoverStat}
-                valueHovered={stat}
-                key={stat}
+                valueHovered={i}
+                key={i}
             >
                 <img
-                    src={`general/stats/${stat}.png`}
+                    src={`general/stats/${stat.type}.png`}
                     alt=""
                     className={styles.statIcon}
                 />
 
-                {unit.stats[stat]}
+                {stat.total}
             </HoverWrapper>
         );
         statItems.push(statItem);
@@ -171,13 +224,13 @@ const UnitInfoBox = ({
                         className={styles.health}
                         // style={{ width: `${healthWidth}%` }}
                     >
-                        {unit.current_health} / {unit.max_health}
+                        {unit.currentHealth} / {unit.totalHealth}
                     </div>
                     <div
                         className={styles.mana}
                         // style={{ width: `${manaWidth}%` }}
                     >
-                        {unit.current_mana} / {unit.max_mana}
+                        {unit.currentMana} / {unit.totalMana}
                     </div>
                 </div>
 
