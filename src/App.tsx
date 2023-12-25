@@ -9,6 +9,10 @@ import StatInfoBox from "./components/StatInfoBox/StatInfoBox";
 import { ShopUnitInfo, TraitInfo, AbilityInfo } from "./types/InfoBoxProps";
 import { GamestateType } from "./types/Gamestate";
 import { expandCompactGamestate } from "./utils/expandCompactGamestate";
+import {
+    createTraitInfo,
+    createShopUnitInfo,
+} from "./utils/createInfoBoxProps";
 
 const zlib = require("react-zlib-js");
 const Buffer = require("buffer/").Buffer;
@@ -58,17 +62,14 @@ function App() {
         mainBody: "",
     });
 
-    const [hoveredTraitObj, setHoveredTraitObj] = useState<TraitInfo>({
-        name: "",
-        displayName: "",
-        activeCount: 0,
-        description: "",
-        intervals: [],
-        champions: [],
-    });
-
     // pubsub states
     const [gamestate, setGamestate] = useState<GamestateType | null>(null);
+
+    const [traitToDisplay, setTraitToDisplay] = useState<TraitInfo | null>(
+        null
+    );
+    const [shopUnitToDisplay, setShopUnitToDisplay] =
+        useState<ShopUnitInfo | null>(null);
 
     console.log("rerender");
 
@@ -152,6 +153,8 @@ function App() {
                         `http://localhost:8000/thepookguy/units?x=${x_1920}&y=${y_1080}`
                     );
 
+                    console.log(gamestate);
+
                     if (req.ok) {
                         const data1 = await req.json();
 
@@ -177,50 +180,32 @@ function App() {
         return () => {
             document.removeEventListener("click", handleMouseMove);
         };
-    }, [overlayResolution, gamestate?.units]);
+    }, [overlayResolution, gamestate?.units, gamestate]);
 
     useEffect(() => {
-        if (isTraitListHovered) {
+        if (isTraitListHovered && gamestate?.traits) {
+            console.log(gamestate.traits);
+            // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
+            console.log("traitIndex is: " + traitIndex);
+            setTraitToDisplay(createTraitInfo(gamestate.traits[traitIndex]));
+            // setTraitToDisplay();
         }
 
         setShowTraitInfoBox(isTraitListHovered);
-    }, [traitIndex, isTraitListHovered]);
+    }, [traitIndex, isTraitListHovered, gamestate?.traits]);
 
     useEffect(() => {
-        const testDataFetch = async (num: number) => {
-            //clear
-            setTestShopUnit({
-                champion: "",
-                name: "",
-                mainBody: "",
-            });
-
-            const req = await fetch(
-                `http://localhost:8000/thepookguy/shop/${shopUnitIndex}`
+        if (isShopListHovered && gamestate?.shopUnits) {
+            console.log(gamestate.shopUnits);
+            // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
+            console.log("shopIndex is: " + shopUnitIndex);
+            setShopUnitToDisplay(
+                createShopUnitInfo(gamestate.shopUnits[shopUnitIndex])
             );
-
-            // const req = await fetch(`https://swapi.dev/api/people/${num}`);
-
-            if (!req.ok) {
-                setShowShopUnitInfoBox(false);
-                return;
-            }
-
-            const data = await req.json();
-
-            setTestShopUnit({
-                champion: data.champion,
-                name: data.name,
-                mainBody: data.mainBody,
-            });
-        };
-
-        if (isShopListHovered) {
-            testDataFetch(shopUnitIndex);
         }
 
         setShowShopUnitInfoBox(isShopListHovered);
-    }, [isShopListHovered, shopUnitIndex]);
+    }, [shopUnitIndex, isShopListHovered, gamestate?.shopUnits]);
 
     useEffect(() => {
         setShowUnitTraitInfoBox(isUnitTraitsHovered);
@@ -283,10 +268,15 @@ function App() {
 
             <div className={styles.traitsList}>{traitTiles}</div>
             {showTraitInfoBox && (
-                <TraitInfoBox type="traitsList" traitObj={hoveredTraitObj} />
+                <TraitInfoBox
+                    type="traitsList"
+                    traitObj={traitToDisplay || undefined}
+                />
             )}
 
-            {showShopUnitInfoBox && <ShopUnitInfoBox ability={testShopUnit} />}
+            {showShopUnitInfoBox && (
+                <ShopUnitInfoBox ability={shopUnitToDisplay || undefined} />
+            )}
 
             <div className={styles.shopList}>{shopTiles}</div>
 

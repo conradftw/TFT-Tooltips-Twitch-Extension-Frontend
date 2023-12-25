@@ -52,7 +52,7 @@ export const expandCompactGamestate = (
             totalMana: unit.mt,
 
             baseAttackDamage: unit.tb,
-            bonusAttackDamagePercent: Math.round(unit.tb * unit.tb),
+            bonusAttackDamagePercent: Math.round(unit.tb * unit.t),
             totalAttackDamage: Math.round(unit.tb * (1 + unit.t)),
 
             baseAbilityPower: 100,
