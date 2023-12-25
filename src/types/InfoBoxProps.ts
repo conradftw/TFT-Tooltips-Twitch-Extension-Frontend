@@ -12,6 +12,10 @@ export type StatInfo = {
     mainBody: string;
 };
 
+export type UnitStatsInfo = {
+    [statType: string]: StatInfo;
+};
+
 export type AbilityInfo = {
     champion: string;
     name: string;
@@ -64,7 +68,7 @@ export type UnitInfo = {
     stats: {
         [stat_type: string]: {
             type: string; //used in img/${}, needs underscores
-            displayName: string; //attack_damage = Attack Damage
+            // displayName: string; //attack_damage = Attack Damage
             total: number;
             base: number;
             bonus: number;
@@ -77,11 +81,12 @@ export type UnitInfo = {
     //     base: number;
     //     bonus: number;
     // }[];
-    ability: {
-        name: string;
-        mainBody: string;
-        details: string;
-    };
+    // ability: {
+    //     name: string;
+    //     mainBody: string;
+    //     details: string;
+    // };
+    ability: AbilityInfo;
 };
 
 /*

@@ -1,4 +1,4 @@
-type StatType = {
+export type StatType = {
     type:
         | "attack_damage"
         | "ability_power"
@@ -7,14 +7,14 @@ type StatType = {
         | "attack_speed"
         | "crit_chance"
         | "crit_damage";
-    displayName:
-        | "Attack Damage"
-        | "Ability Power"
-        | "Armor"
-        | "Magic Resist"
-        | "Attack Speed"
-        | "Critical Strike Chance"
-        | "Critical Strike Damage";
+    // displayName:
+    //     | "Attack Damage"
+    //     | "Ability Power"
+    //     | "Armor"
+    //     | "Magic Resist"
+    //     | "Attack Speed"
+    //     | "Critical Strike Chance"
+    //     | "Critical Strike Damage";
     total: number;
     base: number;
     bonus: number;

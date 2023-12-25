@@ -30,16 +30,6 @@ export const expandCompactGamestate = (
 
     gamestate.units = [];
     for (const unit of compactGamestate.u) {
-        const statTypes = [
-            "attack_speed",
-            "ability_power",
-            "armor",
-            "magic_resist",
-            "attack_speed",
-            "crit_chance",
-            "crit_damage",
-        ];
-
         gamestate.units.push({
             name: unit.n,
             bounding_box: {
@@ -64,49 +54,49 @@ export const expandCompactGamestate = (
             stats: {
                 attack_damage: {
                     type: "attack_damage",
-                    displayName: "Attack Damage",
+                    // displayName: "Attack Damage",
                     total: Math.round(unit.tb * (1 + unit.t)),
                     base: unit.tb,
                     bonus: Math.round(unit.tb * unit.t),
                 },
                 ability_power: {
                     type: "ability_power",
-                    displayName: "Ability Power",
+                    // displayName: "Ability Power",
                     total: 100 + unit.u,
                     base: 100,
                     bonus: unit.u,
                 },
                 armor: {
                     type: "armor",
-                    displayName: "Armor",
+                    // displayName: "Armor",
                     total: unit.vb + unit.v,
                     base: unit.vb,
                     bonus: unit.v,
                 },
                 magic_resist: {
                     type: "magic_resist",
-                    displayName: "Magic Resist",
+                    // displayName: "Magic Resist",
                     total: unit.wb + unit.w,
                     base: unit.wb,
                     bonus: unit.w,
                 },
                 attack_speed: {
                     type: "attack_speed",
-                    displayName: "Attack Speed",
+                    // displayName: "Attack Speed",
                     total: unit.xb * (1 + unit.x),
                     base: unit.xb,
                     bonus: 1 + unit.x,
                 },
                 crit_chance: {
                     type: "crit_chance",
-                    displayName: "Critical Strike Chance",
+                    // displayName: "Critical Strike Chance",
                     total: Math.round(unit.y * 100),
                     base: Math.round(0.25 * 100),
                     bonus: Math.round(unit.y * 100) - Math.round(0.25 * 100),
                 },
                 crit_damage: {
                     type: "crit_damage",
-                    displayName: "Critical Strike Damage",
+                    // displayName: "Critical Strike Damage",
                     total: Math.round(unit.z * 100),
                     base: Math.round(1.4 * 100),
                     bonus: Math.round(unit.z * 100) - Math.round(1.4 * 100),

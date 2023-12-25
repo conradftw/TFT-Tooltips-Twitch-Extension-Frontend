@@ -10,6 +10,7 @@ type UnitInfoBoxProps = {
     onHoverTrait: (showUnitTraitInfoBox: boolean) => void;
     setHoveredTrait: (hoveredTrait: string) => void;
     onHoverStat: (showStatInfoBox: boolean) => void;
+    setHoveredStat: (hoveredStat: string) => void;
 };
 
 const UnitInfoBox = ({
@@ -42,67 +43,59 @@ const UnitInfoBox = ({
         totalMana: 100,
         position_type: "front",
         range: 4,
-        // stats: {
-        //     attack_damage: 10,
-        //     ability_power: 20,
-        //     armor: 30,
-        //     magic_resist: 40,
-        //     attack_speed: 50,
-        //     crit_chance: 60,
-        //     crit_damage: 70,
-        // },
         stats: {
             attack_damage: {
                 type: "attack_damage",
-                displayName: "Attack Damage",
+                // displayName: "Attack Damage",
                 total: 128,
                 base: 55,
                 bonus: 73,
             },
             ability_power: {
                 type: "ability_power",
-                displayName: "Ability Power",
+                // displayName: "Ability Power",
                 total: 100,
                 base: 100,
                 bonus: 0,
             },
             armor: {
                 type: "armor",
-                displayName: "Armor",
+                // displayName: "Armor",
                 total: 15,
                 base: 15,
                 bonus: 0,
             },
             magic_resist: {
                 type: "magic_resist",
-                displayName: "Magic Resist",
+                // displayName: "Magic Resist",
                 total: 55,
                 base: 15,
                 bonus: 40,
             },
             attack_speed: {
                 type: "attack_speed",
-                displayName: "Attack Speed",
+                // displayName: "Attack Speed",
                 total: 1.05,
                 base: 0.7,
                 bonus: 1.5,
             },
             crit_chance: {
                 type: "crit_chance",
-                displayName: "Critical Strike Chance",
+                // displayName: "Critical Strike Chance",
                 total: 80,
                 base: 25,
                 bonus: 55,
             },
             crit_damage: {
                 type: "crit_damage",
-                displayName: "Critical Strike Damage",
+                // displayName: "Critical Strike Damage",
                 total: 140,
                 base: 140,
                 bonus: 0,
             },
         },
         ability: {
+            champion: "jinx",
             name: "Escalation",
             mainBody: `<p<b>Passive Minigun: </b> Attacks grant 4% (<img src="general/stats/ability_power.png"/>) 
                     xddasdasda <hr/> sdaaaaaaaaaaaaaaaaaa</p>`,
@@ -113,6 +106,7 @@ const UnitInfoBox = ({
     onHoverTrait,
     setHoveredTrait,
     onHoverStat,
+    setHoveredStat,
 }: UnitInfoBoxProps) => {
     const [isAbilitySquareHovered, setIsAbilitySquareHovered] = useState(false);
 
@@ -153,13 +147,15 @@ const UnitInfoBox = ({
     ];
 
     for (let i = 0; i < 7; i++) {
-        const stat = unit.stats[statTypes[i]];
+        const statType = statTypes[i];
+        const stat = unit.stats[statType];
         const statItem = (
             <HoverWrapper
                 type="statItem"
                 setIsHovered={onHoverStat}
-                valueHovered={i}
-                key={i}
+                valueHovered={statType}
+                key={statType}
+                sendValueHovered={setHoveredStat}
             >
                 <img
                     src={`general/stats/${stat.type}.png`}

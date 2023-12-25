@@ -11,12 +11,16 @@ import {
     TraitInfo,
     UnitInfo,
     AbilityInfo,
+    StatInfo,
+    UnitStatsInfo,
 } from "./types/InfoBoxProps";
 import {
     createTraitInfo,
     createShopUnitInfo,
+    createUnitInfo,
+    createUnitStatsInfo,
 } from "./utils/createInfoBoxProps";
-import { GamestateType } from "./types/Gamestate";
+import { GamestateType, UnitType } from "./types/Gamestate";
 import { expandCompactGamestate } from "./utils/expandCompactGamestate";
 
 const zlib = require("react-zlib-js");
@@ -52,6 +56,8 @@ function App() {
     const [isUnitTraitsHovered, setIsUnitTraitsHovered] = useState(false);
     const [showUnitTraitInfoBox, setShowUnitTraitInfoBox] = useState(false);
 
+    const [hoveredStat, setHoveredStat] = useState("");
+
     const [showAbilityInfoBox, setShowAbilityInfoBox] = useState(false);
 
     const [showStatInfoBox, setShowStatInfoBox] = useState(false);
@@ -66,6 +72,13 @@ function App() {
         useState<ShopUnitInfo | null>(null);
 
     const [unitToDisplay, setUnitToDisplay] = useState<UnitInfo | null>(null);
+
+    const [abilityToDisplay, setAbilityToDisplay] =
+        useState<AbilityInfo | null>(null);
+
+    const [statsToDisplay, setStatsToDisplay] = useState<UnitStatsInfo | null>(
+        null
+    );
 
     console.log("rerender");
 
@@ -106,9 +119,9 @@ function App() {
             window.Twitch.ext.listen(
                 "broadcast",
                 function (target, contentType, message) {
-                    console.log("target is: " + target);
-                    console.log("contentType is: " + contentType);
-                    console.log("message is: " + message);
+                    // console.log("target is: " + target);
+                    // console.log("contentType is: " + contentType);
+                    // console.log("message is: " + message);
 
                     const inflated = zlib
                         .inflateSync(Buffer.from(message, "base64"))
@@ -145,8 +158,52 @@ function App() {
                     (event.clientY * 1080) / overlayResolution.height;
 
                 setUnitToDisplay(null);
-
+                setAbilityToDisplay(null);
+                setStatsToDisplay(null);
+                setShowUnitInfoBox(false);
                 if (gamestate?.units) {
+                    let hoveredUnit = {} as UnitType;
+                    for (const unit of gamestate.units) {
+                        const corner1 = unit.bounding_box.corner1;
+                        const corner2 = unit.bounding_box.corner2;
+
+                        if (
+                            x_1920 >= corner1.x &&
+                            x_1920 <= corner2.x &&
+                            y_1080 >= corner1.y &&
+                            y_1080 <= corner2.y
+                        ) {
+                            if (Object.keys(hoveredUnit).length) {
+                                const hoveredUnitCorner1 =
+                                    hoveredUnit.bounding_box.corner1;
+                                const hoveredUnitCorner2 =
+                                    hoveredUnit.bounding_box.corner2;
+
+                                if (
+                                    x_1920 >= hoveredUnitCorner1.x &&
+                                    x_1920 <= hoveredUnitCorner2.x &&
+                                    y_1080 >= hoveredUnitCorner1.y &&
+                                    y_1080 <= hoveredUnitCorner2.y &&
+                                    corner2.y > hoveredUnitCorner2.y
+                                ) {
+                                    hoveredUnit = unit;
+                                }
+                            } else {
+                                hoveredUnit = unit;
+                            }
+                        }
+                    }
+
+                    if (Object.keys(hoveredUnit).length) {
+                        const unitInfo = createUnitInfo(hoveredUnit);
+                        console.log(unitInfo);
+                        const unitStatsInfo = createUnitStatsInfo(hoveredUnit);
+                        console.log(unitStatsInfo);
+                        setShowUnitInfoBox(true);
+                        setUnitToDisplay(unitInfo);
+                        setAbilityToDisplay(unitInfo.ability);
+                        setStatsToDisplay(unitStatsInfo);
+                    }
                 }
             }, 300);
         };
@@ -182,6 +239,18 @@ function App() {
 
         setShowShopUnitInfoBox(isShopListHovered);
     }, [shopUnitIndex, isShopListHovered, gamestate?.shopUnits]);
+
+    useEffect(() => {
+        if (isUnitTraitsHovered && gamestate?.traits) {
+            console.log(gamestate.traits);
+            // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
+            console.log("hoveredTrait is: " + hoveredTrait);
+            // setTraitToDisplay(createTraitInfo(gamestate.traits[hoveredTrait]));
+            // setTraitToDisplay();
+        }
+
+        setShowUnitTraitInfoBox(isUnitTraitsHovered);
+    }, [hoveredTrait, isUnitTraitsHovered, gamestate?.traits]);
 
     useEffect(() => {
         setShowUnitTraitInfoBox(isUnitTraitsHovered);
@@ -235,12 +304,16 @@ function App() {
                 Current selected unit is: {testUnitName}
             </div> */}
 
-            <UnitInfoBox
-                onHoverAbilitySquare={setShowAbilityInfoBox}
-                onHoverTrait={setIsUnitTraitsHovered}
-                setHoveredTrait={setHoveredTrait}
-                onHoverStat={setShowStatInfoBox}
-            />
+            {unitToDisplay && (
+                <UnitInfoBox
+                    onHoverAbilitySquare={setShowAbilityInfoBox}
+                    onHoverTrait={setIsUnitTraitsHovered}
+                    setHoveredTrait={setHoveredTrait}
+                    onHoverStat={setShowStatInfoBox}
+                    setHoveredStat={setHoveredStat}
+                    unit={unitToDisplay || undefined}
+                />
+            )}
 
             <div className={styles.traitsList}>{traitTiles}</div>
             {showTraitInfoBox && (
@@ -256,11 +329,18 @@ function App() {
 
             <div className={styles.shopList}>{shopTiles}</div>
 
-            {showAbilityInfoBox && <AbilityInfoBox />}
+            {showAbilityInfoBox && (
+                <AbilityInfoBox ability={abilityToDisplay || undefined} />
+            )}
 
             {showUnitTraitInfoBox && <TraitInfoBox type="unitTrait" />}
 
-            {showStatInfoBox && <StatInfoBox />}
+            {hoveredStat && showStatInfoBox && (
+                <StatInfoBox
+                    stats={statsToDisplay || undefined}
+                    hoveredStat={hoveredStat}
+                />
+            )}
         </div>
     );
 }

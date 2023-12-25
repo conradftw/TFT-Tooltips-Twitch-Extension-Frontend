@@ -1,7 +1,14 @@
 import { TraitType, ShopUnitType, UnitType } from "../types/Gamestate";
-import { TraitInfo, ShopUnitInfo, UnitInfo } from "../types/InfoBoxProps";
+import {
+    TraitInfo,
+    ShopUnitInfo,
+    UnitInfo,
+    AbilityInfo,
+    UnitStatsInfo,
+} from "../types/InfoBoxProps";
 import { traitDetails, traitNameVariations } from "./traitDetails";
 import { championDetails } from "./championDetails";
+import { statDetails } from "./statDetails";
 
 export const createTraitInfo = (simpleTrait: TraitType): TraitInfo => {
     const traitInfo = {} as TraitInfo;
@@ -63,38 +70,76 @@ export const createUnitInfo = (unit: UnitType): UnitInfo => {
         // oh fuck i screwed up, redo this later
         // change UnitType to be more array based?
         unitInfo.stats = unit.stats;
+
+        unitInfo.ability = {
+            champion: champion.name,
+            name: champion.getAbilityName(),
+            mainBody: champion.getAbilityMainText(unit),
+            details: champion.getAbilityDetails(unit),
+        };
     }
 
     return unitInfo;
 };
 
+export const createAbilityInfo = (unit: UnitType): AbilityInfo => {
+    const abilityInfo = {} as AbilityInfo;
+
+    const champion = championDetails[unit.name];
+
+    abilityInfo.champion = champion.name;
+    abilityInfo.name = champion.getAbilityName();
+    abilityInfo.mainBody = champion.getAbilityMainText(unit);
+    abilityInfo.details = champion.getAbilityDetails(unit);
+
+    return abilityInfo;
+};
+
+export const createUnitStatsInfo = (unit: UnitType): UnitStatsInfo => {
+    const unitStatsInfo = {} as UnitStatsInfo;
+
+    const statTypes = [
+        "attack_damage",
+        "ability_power",
+        "armor",
+        "magic_resist",
+        "attack_speed",
+        "crit_chance",
+        "crit_damage",
+    ];
+
+    for (const stat of statTypes) {
+        const detailedStat = statDetails[stat];
+
+        unitStatsInfo[stat] = {
+            type: stat,
+            header: detailedStat.displayName,
+            description: detailedStat.description,
+            mainBody: detailedStat.mainBody(unit.stats[stat]),
+        };
+    }
+
+    return unitStatsInfo;
+};
 /*
-    name: string;
-    displayName: string;
-    cost: number;
-    star_level: number;
-    // traits: string[];
-    traits: {
-        name: string;
-        internalName: string;
-        displayName: string;
-    }[];
-    currentHealth: number;
-    totalHealth: number;
-    currentMana: number;
-    totalMana: number;
-    position_type: "front" | "back";
-    range: number;
+
+
     stats: {
-        type: string; //used in img/${}, needs underscores
-        displayName: string; //attack_damage = Attack Damage
-        total: number;
-        base: number;
-        bonus: number;
-    }[];
-    ability: {
-        name: string;
-        mainBody: string;
-        details: string;
+        [stat_type: string]: StatType;
     };
+
+
+
+    export type StatInfo = {
+        type: string;
+        header: string;
+        description: string;
+        mainBody: string;
+    };
+
+    export type UnitStatsInfo = {
+        [statType: string]: StatInfo;
+    };
+
+};
 */
