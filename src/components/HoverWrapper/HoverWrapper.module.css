@@ -34,12 +34,15 @@
 }
 
 .unitTrait {
+    width: 150%;
     width: 100%;
     height: calc((28 / 76) * 100%);
 
     display: flex;
     align-items: center;
     padding-bottom: 15%;
+    /* border: 1px solid cyan; */
+    white-space: nowrap;
 }
 
 .statItem {

@@ -20,7 +20,7 @@ import {
     createUnitInfo,
     createUnitStatsInfo,
 } from "./utils/createInfoBoxProps";
-import { GamestateType, UnitType } from "./types/Gamestate";
+import { GamestateType, TraitType, UnitType } from "./types/Gamestate";
 import { expandCompactGamestate } from "./utils/expandCompactGamestate";
 
 const zlib = require("react-zlib-js");
@@ -218,7 +218,7 @@ function App() {
     useEffect(() => {
         if (
             isTraitListHovered &&
-            gamestate?.traits &&
+            gamestate?.traits.length &&
             traitIndex < gamestate.traits.length
         ) {
             console.log(gamestate.traits);
@@ -232,7 +232,7 @@ function App() {
     }, [traitIndex, isTraitListHovered, gamestate?.traits]);
 
     useEffect(() => {
-        if (isShopListHovered && gamestate?.shopUnits) {
+        if (isShopListHovered && gamestate?.shopUnits.length) {
             console.log(gamestate.shopUnits);
             // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
             console.log("shopIndex is: " + shopUnitIndex);
@@ -251,24 +251,27 @@ function App() {
     }, [shopUnitIndex, isShopListHovered, gamestate?.shopUnits]);
 
     useEffect(() => {
-        if (isUnitTraitsHovered && gamestate?.traits) {
+        if (isUnitTraitsHovered && gamestate?.traits.length) {
+            let unitTrait = {} as TraitType;
+            for (const trait of gamestate.traits) {
+                if (hoveredTrait === trait.traitName) {
+                    unitTrait = trait;
+                    break;
+                }
+            }
             console.log(gamestate.traits);
-            // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
             console.log("hoveredTrait is: " + hoveredTrait);
-            // setTraitToDisplay(createTraitInfo(gamestate.traits[hoveredTrait]));
+
+            if (!Object.keys(unitTrait).length) {
+                unitTrait = { count: 0, traitName: hoveredTrait };
+            }
+
+            setTraitToDisplay(createTraitInfo(unitTrait));
             // setTraitToDisplay();
         }
 
         setShowUnitTraitInfoBox(isUnitTraitsHovered);
     }, [hoveredTrait, isUnitTraitsHovered, gamestate?.traits]);
-
-    useEffect(() => {
-        setShowUnitTraitInfoBox(isUnitTraitsHovered);
-
-        if (isUnitTraitsHovered && hoveredTrait) {
-            console.log("Xdd");
-        }
-    }, [hoveredTrait, isUnitTraitsHovered]);
 
     const traitTiles = [];
     for (let i = 0; i < 9; i++) {
@@ -343,7 +346,12 @@ function App() {
                 <AbilityInfoBox ability={abilityToDisplay || undefined} />
             )}
 
-            {showUnitTraitInfoBox && <TraitInfoBox type="unitTrait" />}
+            {showUnitTraitInfoBox && (
+                <TraitInfoBox
+                    type="unitTrait"
+                    traitObj={traitToDisplay || undefined}
+                />
+            )}
 
             {hoveredStat && showStatInfoBox && (
                 <StatInfoBox

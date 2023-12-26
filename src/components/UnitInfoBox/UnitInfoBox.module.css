@@ -56,6 +56,7 @@ ul {
 
     height: 100%;
     height: calc((138 / 684) * 100%);
+    /* width: 100%; */
 
     /* border: 10px solid red; */
 }
@@ -74,7 +75,6 @@ ul {
     top: 0;
     left: calc((8 / 216) * 100%);
     left: 0;
-    width: 50%;
     height: 60%;
     display: flex;
 }
@@ -88,6 +88,8 @@ ul {
 .traitText {
     padding-left: calc((10 / 216) * 100%);
     text-transform: capitalize;
+    /* border: 1px solid pink; */
+    /* width: 100%; */
 }
 
 .traitContainer {
