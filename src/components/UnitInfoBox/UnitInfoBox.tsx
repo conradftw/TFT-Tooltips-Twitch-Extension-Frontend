@@ -163,13 +163,15 @@ const UnitInfoBox = ({
                     className={styles.statIcon}
                 />
 
-                {stat.total}
+                {Math.round(stat.total * 100) / 100}
             </HoverWrapper>
         );
         statItems.push(statItem);
     }
 
     const getUnitSellCost = () => {
+        if (!unit.cost) return 0;
+
         if (unit.cost === 1) {
             return Math.pow(3, unit.star_level - 1);
         }
@@ -180,11 +182,13 @@ const UnitInfoBox = ({
         <div className={styles.border1}>
             <div className={styles.unitInfoBox}>
                 <div className={styles.starLevelContainer}>
-                    <img
-                        src={`general/${unit.star_level}star.png`}
-                        alt="star_level_icon"
-                        className={styles.starLevelIcon}
-                    />
+                    {unit.star_level && (
+                        <img
+                            src={`general/${unit.star_level}star.png`}
+                            alt="star_level_icon"
+                            className={styles.starLevelIcon}
+                        />
+                    )}
                 </div>
                 <div className={styles.splash}>
                     <img

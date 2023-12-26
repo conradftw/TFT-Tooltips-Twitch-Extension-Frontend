@@ -216,7 +216,11 @@ function App() {
     }, [overlayResolution, gamestate?.units]);
 
     useEffect(() => {
-        if (isTraitListHovered && gamestate?.traits) {
+        if (
+            isTraitListHovered &&
+            gamestate?.traits &&
+            traitIndex < gamestate.traits.length
+        ) {
             console.log(gamestate.traits);
             // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
             console.log("traitIndex is: " + traitIndex);
@@ -232,9 +236,15 @@ function App() {
             console.log(gamestate.shopUnits);
             // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
             console.log("shopIndex is: " + shopUnitIndex);
-            setShopUnitToDisplay(
-                createShopUnitInfo(gamestate.shopUnits[shopUnitIndex])
-            );
+            const shopUnit = gamestate.shopUnits[shopUnitIndex];
+
+            if (shopUnit.cost && shopUnit.shopUnitName !== "sold") {
+                setShopUnitToDisplay(
+                    createShopUnitInfo(gamestate.shopUnits[shopUnitIndex])
+                );
+            } else {
+                setShopUnitToDisplay(null);
+            }
         }
 
         setShowShopUnitInfoBox(isShopListHovered);
@@ -323,7 +333,7 @@ function App() {
                 />
             )}
 
-            {showShopUnitInfoBox && (
+            {showShopUnitInfoBox && shopUnitToDisplay && (
                 <ShopUnitInfoBox ability={shopUnitToDisplay || undefined} />
             )}
 

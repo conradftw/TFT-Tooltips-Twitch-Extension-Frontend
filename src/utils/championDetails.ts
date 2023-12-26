@@ -3750,6 +3750,31 @@ export const championDetails: {
             return abilityMainText;
         },
     },
+    trainingdummy: {
+        name: "trainingdummy",
+        displayName: "Target Dummy",
+        cost: 0,
+        traits: [],
+        position_type: "front",
+        getAbilityName: () => {
+            return `On Duty!`;
+        },
+        getAbilityMainText: (unit: UnitType): string => {
+            const abilityMainText = `<p>The Training Dummy cannot move or attack. It is also dressed like a devilishly handsome Yordle.</p>`;
+
+            return abilityMainText;
+        },
+        getAbilityDetails: (unit: UnitType): string => {
+            const abilityDetails = ``;
+
+            return abilityDetails;
+        },
+        getAbilityMainTextWithDefaults: () => {
+            const abilityMainText = `<p>The Training Dummy cannot move or attack. It is also dressed like a devilishly handsome Yordle.</p>`;
+
+            return abilityMainText;
+        },
+    },
     twistedfate: {
         name: "twistedfate",
         displayName: "Twisted Fate",

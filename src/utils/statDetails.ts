@@ -55,7 +55,12 @@ export const statDetails: {
         displayName: "Attack Speed",
         description: "Number of attacks per second.",
         mainBody: (stat: StatType): string => {
-            const statText = `<p>Current Attack Speed: <span class="bonusStat">${stat.total}</span> (<span class="baseStat">${stat.base}</span> x <span class="bonusStat">${stat.bonus}</span>)</p>`;
+            const statText = `<p>Current Attack Speed: <span class="bonusStat">${
+                // Math.round(stat.total * 100) / 100
+                stat.total.toFixed(2) + ""
+            }</span> (<span class="baseStat">${
+                stat.base
+            }</span> x <span class="bonusStat">${stat.bonus}</span>)</p>`;
             return statText;
         },
     },
