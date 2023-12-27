@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import styles from "./App.module.css";
 import TraitInfoBox from "./components/TraitInfoBox/TraitInfoBox";
 import ShopUnitInfoBox from "./components/ShopUnitInfoBox/ShopUnitInfoBox";
@@ -11,7 +11,6 @@ import {
     TraitInfo,
     UnitInfo,
     AbilityInfo,
-    StatInfo,
     UnitStatsInfo,
 } from "./types/InfoBoxProps";
 import {
@@ -22,6 +21,7 @@ import {
 } from "./utils/createInfoBoxProps";
 import { GamestateType, TraitType, UnitType } from "./types/Gamestate";
 import { expandCompactGamestate } from "./utils/expandCompactGamestate";
+import { ErrorBoundary } from "react-error-boundary";
 
 const zlib = require("react-zlib-js");
 const Buffer = require("buffer/").Buffer;
@@ -33,6 +33,19 @@ type OverlayResolution = {
     width: number;
     height: number;
 };
+
+type ErrorBoundaryProps = {
+    error: Error;
+};
+
+function ErrorFallback({ error }: ErrorBoundaryProps) {
+    return (
+        <div role="alert">
+            <p>Something went wrong:</p>
+            <pre style={{ color: "red" }}>{error.message}</pre>
+        </div>
+    );
+}
 
 function App() {
     const [overlayResolution, setOverlayResolution] =
@@ -82,15 +95,24 @@ function App() {
 
     console.log("rerender");
 
-    useEffect(() => {
-        const handleResize = () => {
-            console.log("resized");
-            setOverlayResolution({
-                width: document.body.clientWidth,
-                height: document.body.clientHeight,
-            });
-        };
+    const handleResize = () => {
+        console.log(
+            `resized: ${document.body.clientWidth} x ${document.body.clientHeight}`
+        );
+        setOverlayResolution({
+            width: document.body.clientWidth,
+            height: document.body.clientHeight,
+        });
+    };
 
+    const clearInfoBoxes = () => {
+        setUnitToDisplay(null);
+        setAbilityToDisplay(null);
+        setStatsToDisplay(null);
+        setShowUnitInfoBox(false);
+    };
+
+    useEffect(() => {
         if (window.Twitch.ext) {
             window.Twitch.ext.onAuthorized(function (auth) {
                 console.log(
@@ -101,28 +123,9 @@ function App() {
                 console.log("The channel ID is", auth.channelId);
             });
 
-            window.Twitch.ext.onContext(function (contextCallback) {
-                // console.log(document.body.clientWidth);
-                // console.log(document.body.clientHeight);
-                // setOverlayResolution({
-                //     width: document.body.clientWidth,
-                //     height: document.body.clientHeight,
-                // });
-                // console.log(
-                //     `Display Resolution (including black bars): ${contextCallback.displayResolution}`
-                // );
-                // console.log(
-                //     `Video Resolution: ${contextCallback.videoResolution}`
-                // );
-            });
-
             window.Twitch.ext.listen(
                 "broadcast",
                 function (target, contentType, message) {
-                    // console.log("target is: " + target);
-                    // console.log("contentType is: " + contentType);
-                    // console.log("message is: " + message);
-
                     const inflated = zlib
                         .inflateSync(Buffer.from(message, "base64"))
                         .toString();
@@ -148,7 +151,7 @@ function App() {
         let timer: number;
         const handleMouseMove = (event: MouseEvent) => {
             window.clearTimeout(timer);
-            timer = window.setTimeout(async () => {
+            timer = window.setTimeout(() => {
                 console.log(
                     `Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`
                 );
@@ -157,11 +160,9 @@ function App() {
                 const y_1080 =
                     (event.clientY * 1080) / overlayResolution.height;
 
-                setUnitToDisplay(null);
-                setAbilityToDisplay(null);
-                setStatsToDisplay(null);
-                setShowUnitInfoBox(false);
-                if (gamestate?.units) {
+                clearInfoBoxes();
+
+                if (gamestate?.units.length) {
                     let hoveredUnit = {} as UnitType;
                     for (const unit of gamestate.units) {
                         const corner1 = unit.bounding_box.corner1;
@@ -216,61 +217,82 @@ function App() {
     }, [overlayResolution, gamestate?.units]);
 
     useEffect(() => {
-        if (
-            isTraitListHovered &&
-            gamestate?.traits.length &&
-            traitIndex < gamestate.traits.length
-        ) {
-            console.log(gamestate.traits);
-            // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
-            console.log("traitIndex is: " + traitIndex);
-            setTraitToDisplay(createTraitInfo(gamestate.traits[traitIndex]));
-            // setTraitToDisplay();
+        try {
+            if (
+                isTraitListHovered &&
+                gamestate?.traits.length &&
+                traitIndex < gamestate.traits.length
+            ) {
+                console.log(gamestate.traits);
+                // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
+                console.log("traitIndex is: " + traitIndex);
+                setTraitToDisplay(
+                    createTraitInfo(gamestate.traits[traitIndex])
+                );
+            } else {
+                setTraitToDisplay(null);
+            }
+        } catch (error) {
+            console.log("Error with: Hovering TraitsList");
+            // log to server
+            console.log(error);
         }
 
         setShowTraitInfoBox(isTraitListHovered);
     }, [traitIndex, isTraitListHovered, gamestate?.traits]);
 
     useEffect(() => {
-        if (isShopListHovered && gamestate?.shopUnits.length) {
-            console.log(gamestate.shopUnits);
-            // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
-            console.log("shopIndex is: " + shopUnitIndex);
-            const shopUnit = gamestate.shopUnits[shopUnitIndex];
+        try {
+            if (isShopListHovered && gamestate?.shopUnits.length) {
+                console.log(gamestate.shopUnits);
+                // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
+                console.log("shopIndex is: " + shopUnitIndex);
+                const shopUnit = gamestate.shopUnits[shopUnitIndex];
 
-            if (shopUnit.cost && shopUnit.shopUnitName !== "sold") {
-                setShopUnitToDisplay(
-                    createShopUnitInfo(gamestate.shopUnits[shopUnitIndex])
-                );
+                if (shopUnit.cost && shopUnit.shopUnitName !== "sold") {
+                    setShopUnitToDisplay(
+                        createShopUnitInfo(gamestate.shopUnits[shopUnitIndex])
+                    );
+                } else {
+                    setShopUnitToDisplay(null);
+                }
             } else {
+                console.log("xdd");
                 setShopUnitToDisplay(null);
             }
+        } catch (error) {
+            console.log("Error with: Hovering Shop");
+
+            console.log(error);
         }
 
         setShowShopUnitInfoBox(isShopListHovered);
     }, [shopUnitIndex, isShopListHovered, gamestate?.shopUnits]);
 
     useEffect(() => {
-        if (isUnitTraitsHovered && gamestate?.traits.length) {
-            let unitTrait = {} as TraitType;
-            for (const trait of gamestate.traits) {
-                if (hoveredTrait === trait.traitName) {
-                    unitTrait = trait;
-                    break;
+        try {
+            if (isUnitTraitsHovered && gamestate?.traits.length) {
+                console.log(gamestate.traits);
+                console.log("hoveredTrait is: " + hoveredTrait);
+
+                let unitTrait = { count: 0, traitName: hoveredTrait };
+
+                for (const trait of gamestate.traits) {
+                    if (hoveredTrait === trait.traitName) {
+                        unitTrait = trait;
+                        break;
+                    }
                 }
-            }
-            console.log(gamestate.traits);
-            console.log("hoveredTrait is: " + hoveredTrait);
 
-            if (!Object.keys(unitTrait).length) {
-                unitTrait = { count: 0, traitName: hoveredTrait };
+                setTraitToDisplay(createTraitInfo(unitTrait));
             }
 
-            setTraitToDisplay(createTraitInfo(unitTrait));
-            // setTraitToDisplay();
+            setShowUnitTraitInfoBox(isUnitTraitsHovered);
+        } catch (error) {
+            console.log("Error with: Hovering Unit Traits");
+            // log error to server?
+            console.log(error);
         }
-
-        setShowUnitTraitInfoBox(isUnitTraitsHovered);
     }, [hoveredTrait, isUnitTraitsHovered, gamestate?.traits]);
 
     const traitTiles = [];
@@ -307,59 +329,52 @@ function App() {
     }
 
     return (
-        <div className={styles.App} id="overlay">
-            {/* <div className={styles.testDisplay}>
-                Current selected trait is: {traitIndex}
-                <br />
-                Current Video Resolution is: {overlayResolution.width} x{" "}
-                {overlayResolution.height}
-                <br />
-                Current selected unit is: {testUnitName}
-            </div> */}
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <div className={styles.App} id="overlay">
+                {unitToDisplay && (
+                    <UnitInfoBox
+                        onHoverAbilitySquare={setShowAbilityInfoBox}
+                        onHoverTrait={setIsUnitTraitsHovered}
+                        setHoveredTrait={setHoveredTrait}
+                        onHoverStat={setShowStatInfoBox}
+                        setHoveredStat={setHoveredStat}
+                        unit={unitToDisplay || undefined}
+                    />
+                )}
 
-            {unitToDisplay && (
-                <UnitInfoBox
-                    onHoverAbilitySquare={setShowAbilityInfoBox}
-                    onHoverTrait={setIsUnitTraitsHovered}
-                    setHoveredTrait={setHoveredTrait}
-                    onHoverStat={setShowStatInfoBox}
-                    setHoveredStat={setHoveredStat}
-                    unit={unitToDisplay || undefined}
-                />
-            )}
+                <div className={styles.traitsList}>{traitTiles}</div>
+                {traitToDisplay && (
+                    <TraitInfoBox
+                        type="traitsList"
+                        traitObj={traitToDisplay || undefined}
+                    />
+                )}
 
-            <div className={styles.traitsList}>{traitTiles}</div>
-            {showTraitInfoBox && (
-                <TraitInfoBox
-                    type="traitsList"
-                    traitObj={traitToDisplay || undefined}
-                />
-            )}
+                {shopUnitToDisplay && (
+                    <ShopUnitInfoBox ability={shopUnitToDisplay || undefined} />
+                )}
 
-            {showShopUnitInfoBox && shopUnitToDisplay && (
-                <ShopUnitInfoBox ability={shopUnitToDisplay || undefined} />
-            )}
+                <div className={styles.shopList}>{shopTiles}</div>
 
-            <div className={styles.shopList}>{shopTiles}</div>
+                {showAbilityInfoBox && (
+                    <AbilityInfoBox ability={abilityToDisplay || undefined} />
+                )}
 
-            {showAbilityInfoBox && (
-                <AbilityInfoBox ability={abilityToDisplay || undefined} />
-            )}
+                {showUnitTraitInfoBox && (
+                    <TraitInfoBox
+                        type="unitTrait"
+                        traitObj={traitToDisplay || undefined}
+                    />
+                )}
 
-            {showUnitTraitInfoBox && (
-                <TraitInfoBox
-                    type="unitTrait"
-                    traitObj={traitToDisplay || undefined}
-                />
-            )}
-
-            {hoveredStat && showStatInfoBox && (
-                <StatInfoBox
-                    stats={statsToDisplay || undefined}
-                    hoveredStat={hoveredStat}
-                />
-            )}
-        </div>
+                {hoveredStat && showStatInfoBox && (
+                    <StatInfoBox
+                        stats={statsToDisplay || undefined}
+                        hoveredStat={hoveredStat}
+                    />
+                )}
+            </div>
+        </ErrorBoundary>
     );
 }
 
