@@ -27,7 +27,7 @@ export const traitNameVariations: {
         displayName: "8-bit",
     },
     bigshot: {
-        name: "deadeye",
+        name: "bigshot",
         internalName: "set10_deadeye",
         displayName: "Big Shot",
     },

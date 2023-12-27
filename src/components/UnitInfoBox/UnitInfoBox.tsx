@@ -7,9 +7,7 @@ import { UnitInfo } from "../../types/InfoBoxProps";
 type UnitInfoBoxProps = {
     unit?: UnitInfo;
     onHoverAbilitySquare: (showAbilityInfoBox: boolean) => void;
-    onHoverTrait: (showUnitTraitInfoBox: boolean) => void;
     setHoveredTrait: (hoveredTrait: string) => void;
-    onHoverStat: (showStatInfoBox: boolean) => void;
     setHoveredStat: (hoveredStat: string) => void;
 };
 
@@ -103,9 +101,7 @@ const UnitInfoBox = ({
         },
     },
     onHoverAbilitySquare,
-    onHoverTrait,
     setHoveredTrait,
-    onHoverStat,
     setHoveredStat,
 }: UnitInfoBoxProps) => {
     const [isAbilitySquareHovered, setIsAbilitySquareHovered] = useState(false);
@@ -119,8 +115,8 @@ const UnitInfoBox = ({
         const unitTrait = (
             <HoverWrapper
                 type="unitTrait"
-                setIsHovered={onHoverTrait}
-                valueHovered={trait.name}
+                // valueHovered={trait.name}
+                valueHovered={[trait.name, ""]}
                 sendValueHovered={setHoveredTrait}
                 key={trait.name}
             >
@@ -152,8 +148,8 @@ const UnitInfoBox = ({
         const statItem = (
             <HoverWrapper
                 type="statItem"
-                setIsHovered={onHoverStat}
-                valueHovered={statType}
+                // valueHovered={statType}
+                valueHovered={[statType, ""]}
                 key={statType}
                 sendValueHovered={setHoveredStat}
             >

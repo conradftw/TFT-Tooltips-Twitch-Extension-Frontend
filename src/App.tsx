@@ -66,12 +66,10 @@ function App() {
     const [hoveredUnitTrait, setHoveredTrait] = useState(
         NO_UNIT_TRAIT_SELECTED
     );
-    const [isUnitTraitsHovered, setIsUnitTraitsHovered] = useState(false);
 
     const [showAbilityInfoBox, setShowAbilityInfoBox] = useState(false);
 
     const [hoveredStat, setHoveredStat] = useState(NO_STAT_SELECTED);
-    const [showStatInfoBox, setShowStatInfoBox] = useState(false);
 
     const [gamestate, setGamestate] = useState<GamestateType | null>(null);
 
@@ -82,6 +80,9 @@ function App() {
         useState<ShopUnitInfo | null>(null);
 
     const [unitToDisplay, setUnitToDisplay] = useState<UnitInfo | null>(null);
+
+    const [unitTraitToDisplay, setUnitTraitToDisplay] =
+        useState<TraitInfo | null>(null);
 
     const [abilityToDisplay, setAbilityToDisplay] =
         useState<AbilityInfo | null>(null);
@@ -123,14 +124,6 @@ function App() {
             console.log(data);
             setGamestate(expandCompactGamestate(data));
         }
-        const test = () => {
-            console.log(
-                "test() wat: calling a new listen setup dafuq? monkaHmm. So this will get called by clean up, and then once more by the setup. Should there be an unlisten and then listen event?"
-            );
-            return (target: string, contentType: string, message: string) => {
-                console.log(contentType);
-            };
-        };
 
         if (window.Twitch.ext) {
             console.log("plSs only get called once");
@@ -144,11 +137,7 @@ function App() {
             });
 
             // okay the problem is it seems I can attach more than one function to this broadcast listen
-            window.Twitch.ext.listen("broadcast", test());
-            console.log(
-                " two things should happen, console shows an extra data object log, and there should be a new listen event in the ws logs"
-            );
-            // console.log("setting up listen broadcast?");
+            window.Twitch.ext.listen("broadcast", handleListen);
         } else {
             console.error("Twitch Extension Helper Library not found");
         }
@@ -159,8 +148,7 @@ function App() {
         return () => {
             console.log("Calling MAIN APP ONMOUNT CLEAN UP");
             window.removeEventListener("resize", handleResize);
-            // window.Twitch.ext.unlisten("broadcast", handleListen);
-            window.Twitch.ext.unlisten("broadcast", test());
+            window.Twitch.ext.unlisten("broadcast", handleListen);
         };
     }, []);
 
@@ -213,6 +201,7 @@ function App() {
                     }
 
                     if (Object.keys(hoveredUnit).length) {
+                        console.log("Creating unit to display");
                         const unitInfo = createUnitInfo(hoveredUnit);
                         console.log(unitInfo);
                         const unitStatsInfo = createUnitStatsInfo(hoveredUnit);
@@ -236,7 +225,7 @@ function App() {
         try {
             if (
                 traitIndex > -1 &&
-                isTraitListHovered &&
+                // isTraitListHovered &&
                 gamestate?.traits.length &&
                 traitIndex < gamestate.traits.length
             ) {
@@ -247,6 +236,7 @@ function App() {
                     createTraitInfo(gamestate.traits[traitIndex])
                 );
             } else {
+                console.log("is the trait reseting somehow?");
                 setTraitToDisplay(null);
                 setTraitIndex(NO_TRAIT_SELECTED);
             }
@@ -255,11 +245,18 @@ function App() {
             // log to server
             console.log(error);
         }
-    }, [traitIndex, isTraitListHovered, gamestate?.traits]);
+        // }, [traitIndex, isTraitListHovered, gamestate?.traits]);
+    }, [traitIndex, gamestate?.traits]);
 
     useEffect(() => {
         try {
-            if (isShopListHovered && gamestate?.shopUnits.length) {
+            console.log("shop hovered");
+            // if (isShopListHovered && gamestate?.shopUnits.length) {
+            if (
+                shopUnitIndex > -1 &&
+                shopUnitIndex < 5 &&
+                gamestate?.shopUnits.length
+            ) {
                 console.log(gamestate.shopUnits);
                 // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
                 console.log("shopIndex is: " + shopUnitIndex);
@@ -270,10 +267,12 @@ function App() {
                         createShopUnitInfo(gamestate.shopUnits[shopUnitIndex])
                     );
                 } else {
+                    console.log("Shop: shop slot is sold");
                     setShopUnitToDisplay(null);
-                    setShopUnitIndex(NO_SHOP_UNIT_SELECTED);
+                    // setShopUnitIndex(NO_SHOP_UNIT_SELECTED);
                 }
             } else {
+                console.log("Shop: shop empty or index outof bounds");
                 setShopUnitToDisplay(null);
                 setShopUnitIndex(NO_SHOP_UNIT_SELECTED);
             }
@@ -282,11 +281,13 @@ function App() {
 
             console.log(error);
         }
-    }, [shopUnitIndex, isShopListHovered, gamestate?.shopUnits]);
+        // }, [shopUnitIndex, isShopListHovered, gamestate?.shopUnits]);
+    }, [shopUnitIndex, gamestate?.shopUnits]);
 
     useEffect(() => {
         try {
-            if (isUnitTraitsHovered && gamestate?.traits.length) {
+            // if (isUnitTraitsHovered && gamestate?.traits.length) {
+            if (hoveredUnitTrait && gamestate?.traits.length) {
                 console.log(gamestate.traits);
                 console.log("hoveredUnitTrait is: " + hoveredUnitTrait);
 
@@ -299,9 +300,12 @@ function App() {
                     }
                 }
 
-                setTraitToDisplay(createTraitInfo(unitTrait));
+                // setTraitToDisplay(createTraitInfo(unitTrait));
+                setUnitTraitToDisplay(createTraitInfo(unitTrait));
             } else {
-                setTraitToDisplay(null);
+                console.log("should separate this traitobj and unittrait ig");
+                // setTraitToDisplay(null);
+                setUnitTraitToDisplay(null);
                 setHoveredTrait(NO_UNIT_TRAIT_SELECTED);
             }
         } catch (error) {
@@ -309,7 +313,8 @@ function App() {
             // log error to server?
             console.log(error);
         }
-    }, [hoveredUnitTrait, isUnitTraitsHovered, gamestate?.traits]);
+        // }, [hoveredUnitTrait, isUnitTraitsHovered, gamestate?.traits]);
+    }, [hoveredUnitTrait, gamestate?.traits]);
 
     const traitTiles = [];
     for (let i = 0; i < 9; i++) {
@@ -317,7 +322,8 @@ function App() {
             <HoverWrapper
                 type="traitTile"
                 setIsHovered={setIsTraitListHovered}
-                valueHovered={i}
+                // valueHovered={i}
+                valueHovered={[i, NO_TRAIT_SELECTED]}
                 sendValueHovered={setTraitIndex}
                 key={i}
             >
@@ -333,7 +339,8 @@ function App() {
             <HoverWrapper
                 type="shopTile"
                 setIsHovered={setIsShopListHovered}
-                valueHovered={i}
+                // valueHovered={i}
+                valueHovered={[i, NO_SHOP_UNIT_SELECTED]}
                 sendValueHovered={setShopUnitIndex}
                 key={i}
             >
@@ -350,9 +357,7 @@ function App() {
                 {unitToDisplay && (
                     <UnitInfoBox
                         onHoverAbilitySquare={setShowAbilityInfoBox}
-                        onHoverTrait={setIsUnitTraitsHovered}
                         setHoveredTrait={setHoveredTrait}
-                        onHoverStat={setShowStatInfoBox}
                         setHoveredStat={setHoveredStat}
                         unit={unitToDisplay || undefined}
                     />
@@ -376,14 +381,15 @@ function App() {
                     <AbilityInfoBox ability={abilityToDisplay || undefined} />
                 )}
 
-                {hoveredUnitTrait && traitToDisplay && (
+                {hoveredUnitTrait && unitTraitToDisplay && (
                     <TraitInfoBox
                         type="unitTrait"
-                        traitObj={traitToDisplay || undefined}
+                        traitObj={unitTraitToDisplay || undefined}
                     />
                 )}
 
-                {hoveredStat && statsToDisplay && showStatInfoBox && (
+                {/* {hoveredStat && statsToDisplay && showStatInfoBox && ( */}
+                {hoveredStat && statsToDisplay && (
                     <StatInfoBox
                         stats={statsToDisplay}
                         hoveredStat={hoveredStat}

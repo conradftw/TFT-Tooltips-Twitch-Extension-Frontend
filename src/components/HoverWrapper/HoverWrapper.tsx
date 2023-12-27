@@ -5,8 +5,9 @@ import { debounce } from "lodash";
 interface HoverWrapperProps {
     type: string;
     children: ReactNode | null;
-    setIsHovered: (isHovered: boolean) => void;
-    valueHovered?: any; //
+    setIsHovered?: (isHovered: boolean) => void;
+    // valueHovered?: any; //
+    valueHovered?: [any, any];
     sendValueHovered?: (value: any) => void;
 }
 
@@ -17,14 +18,15 @@ const HoverWrapper = ({
     type,
     children,
     setIsHovered,
-    valueHovered = "",
+    // valueHovered = "",
+    valueHovered = ["", ""],
     sendValueHovered,
 }: HoverWrapperProps) => {
     const debouncedHandleMouseEnter = debounce(() => {
-        setIsHovered(true);
+        if (setIsHovered) setIsHovered(true);
 
         if (sendValueHovered) {
-            sendValueHovered(valueHovered);
+            sendValueHovered(valueHovered[0]);
         }
 
         console.log(`${type}: Hovered ${valueHovered}`);
@@ -32,11 +34,11 @@ const HoverWrapper = ({
 
     const debouncedHandleMouseLeave = debounce(() => {
         debouncedHandleMouseEnter.cancel();
-        setIsHovered(false);
-        // if (sendValueHovered) {
-        //     console.log("Resetting");
-        //     sendValueHovered(null);
-        // }
+        if (setIsHovered) setIsHovered(false);
+
+        if (sendValueHovered) {
+            sendValueHovered(valueHovered[1]);
+        }
 
         console.log(`${type}: Stopped Hovering ${valueHovered}`);
     }, MOUSELEAVE_DEBOUNCE_DELAY);
