@@ -33,6 +33,11 @@ const HoverWrapper = ({
     const debouncedHandleMouseLeave = debounce(() => {
         debouncedHandleMouseEnter.cancel();
         setIsHovered(false);
+        // if (sendValueHovered) {
+        //     console.log("Resetting");
+        //     sendValueHovered(null);
+        // }
+
         console.log(`${type}: Stopped Hovering ${valueHovered}`);
     }, MOUSELEAVE_DEBOUNCE_DELAY);
 

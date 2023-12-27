@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./App.module.css";
 import TraitInfoBox from "./components/TraitInfoBox/TraitInfoBox";
 import ShopUnitInfoBox from "./components/ShopUnitInfoBox/ShopUnitInfoBox";
@@ -19,7 +19,7 @@ import {
     createUnitInfo,
     createUnitStatsInfo,
 } from "./utils/createInfoBoxProps";
-import { GamestateType, TraitType, UnitType } from "./types/Gamestate";
+import { GamestateType, UnitType } from "./types/Gamestate";
 import { expandCompactGamestate } from "./utils/expandCompactGamestate";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -28,6 +28,9 @@ const Buffer = require("buffer/").Buffer;
 
 const NO_TRAIT_SELECTED = -1;
 const NO_SHOP_UNIT_SELECTED = -1;
+
+const NO_UNIT_TRAIT_SELECTED = "";
+const NO_STAT_SELECTED = "";
 
 type OverlayResolution = {
     width: number;
@@ -50,32 +53,26 @@ function ErrorFallback({ error }: ErrorBoundaryProps) {
 function App() {
     const [overlayResolution, setOverlayResolution] =
         useState<OverlayResolution>({
-            width: 1920,
-            height: 1080,
+            width: document.body.clientWidth,
+            height: document.body.clientHeight,
         });
 
     const [shopUnitIndex, setShopUnitIndex] = useState(NO_SHOP_UNIT_SELECTED);
     const [isShopListHovered, setIsShopListHovered] = useState(false);
-    const [showShopUnitInfoBox, setShowShopUnitInfoBox] = useState(false);
 
     const [traitIndex, setTraitIndex] = useState(NO_TRAIT_SELECTED);
     const [isTraitListHovered, setIsTraitListHovered] = useState(false);
-    const [showTraitInfoBox, setShowTraitInfoBox] = useState(false);
 
-    const [showUnitInfoBox, setShowUnitInfoBox] = useState(false);
-
-    // when trait in UnitInfoBox is hovered
-    const [hoveredTrait, setHoveredTrait] = useState("");
+    const [hoveredUnitTrait, setHoveredTrait] = useState(
+        NO_UNIT_TRAIT_SELECTED
+    );
     const [isUnitTraitsHovered, setIsUnitTraitsHovered] = useState(false);
-    const [showUnitTraitInfoBox, setShowUnitTraitInfoBox] = useState(false);
-
-    const [hoveredStat, setHoveredStat] = useState("");
 
     const [showAbilityInfoBox, setShowAbilityInfoBox] = useState(false);
 
+    const [hoveredStat, setHoveredStat] = useState(NO_STAT_SELECTED);
     const [showStatInfoBox, setShowStatInfoBox] = useState(false);
 
-    // pubsub states
     const [gamestate, setGamestate] = useState<GamestateType | null>(null);
 
     const [traitToDisplay, setTraitToDisplay] = useState<TraitInfo | null>(
@@ -109,11 +106,34 @@ function App() {
         setUnitToDisplay(null);
         setAbilityToDisplay(null);
         setStatsToDisplay(null);
-        setShowUnitInfoBox(false);
     };
 
     useEffect(() => {
+        console.log("pretty sure therse is a rerender per useeffect lol");
+        function handleListen(
+            target: string,
+            contentType: string,
+            message: string
+        ) {
+            const inflated = zlib
+                .inflateSync(Buffer.from(message, "base64"))
+                .toString();
+
+            const data = JSON.parse(inflated);
+            console.log(data);
+            setGamestate(expandCompactGamestate(data));
+        }
+        const test = () => {
+            console.log(
+                "test() wat: calling a new listen setup dafuq? monkaHmm. So this will get called by clean up, and then once more by the setup. Should there be an unlisten and then listen event?"
+            );
+            return (target: string, contentType: string, message: string) => {
+                console.log(contentType);
+            };
+        };
+
         if (window.Twitch.ext) {
+            console.log("plSs only get called once");
             window.Twitch.ext.onAuthorized(function (auth) {
                 console.log(
                     "The JWT that will be passed to the EBS is",
@@ -123,27 +143,24 @@ function App() {
                 console.log("The channel ID is", auth.channelId);
             });
 
-            window.Twitch.ext.listen(
-                "broadcast",
-                function (target, contentType, message) {
-                    const inflated = zlib
-                        .inflateSync(Buffer.from(message, "base64"))
-                        .toString();
-
-                    const data = JSON.parse(inflated);
-                    console.log(data);
-                    setGamestate(expandCompactGamestate(data));
-                }
+            // okay the problem is it seems I can attach more than one function to this broadcast listen
+            window.Twitch.ext.listen("broadcast", test());
+            console.log(
+                " two things should happen, console shows an extra data object log, and there should be a new listen event in the ws logs"
             );
+            // console.log("setting up listen broadcast?");
         } else {
             console.error("Twitch Extension Helper Library not found");
         }
 
-        handleResize();
+        // handleResize();
         window.addEventListener("resize", handleResize);
 
         return () => {
+            console.log("Calling MAIN APP ONMOUNT CLEAN UP");
             window.removeEventListener("resize", handleResize);
+            // window.Twitch.ext.unlisten("broadcast", handleListen);
+            window.Twitch.ext.unlisten("broadcast", test());
         };
     }, []);
 
@@ -200,7 +217,6 @@ function App() {
                         console.log(unitInfo);
                         const unitStatsInfo = createUnitStatsInfo(hoveredUnit);
                         console.log(unitStatsInfo);
-                        setShowUnitInfoBox(true);
                         setUnitToDisplay(unitInfo);
                         setAbilityToDisplay(unitInfo.ability);
                         setStatsToDisplay(unitStatsInfo);
@@ -219,6 +235,7 @@ function App() {
     useEffect(() => {
         try {
             if (
+                traitIndex > -1 &&
                 isTraitListHovered &&
                 gamestate?.traits.length &&
                 traitIndex < gamestate.traits.length
@@ -231,14 +248,13 @@ function App() {
                 );
             } else {
                 setTraitToDisplay(null);
+                setTraitIndex(NO_TRAIT_SELECTED);
             }
         } catch (error) {
             console.log("Error with: Hovering TraitsList");
             // log to server
             console.log(error);
         }
-
-        setShowTraitInfoBox(isTraitListHovered);
     }, [traitIndex, isTraitListHovered, gamestate?.traits]);
 
     useEffect(() => {
@@ -255,45 +271,45 @@ function App() {
                     );
                 } else {
                     setShopUnitToDisplay(null);
+                    setShopUnitIndex(NO_SHOP_UNIT_SELECTED);
                 }
             } else {
-                console.log("xdd");
                 setShopUnitToDisplay(null);
+                setShopUnitIndex(NO_SHOP_UNIT_SELECTED);
             }
         } catch (error) {
             console.log("Error with: Hovering Shop");
 
             console.log(error);
         }
-
-        setShowShopUnitInfoBox(isShopListHovered);
     }, [shopUnitIndex, isShopListHovered, gamestate?.shopUnits]);
 
     useEffect(() => {
         try {
             if (isUnitTraitsHovered && gamestate?.traits.length) {
                 console.log(gamestate.traits);
-                console.log("hoveredTrait is: " + hoveredTrait);
+                console.log("hoveredUnitTrait is: " + hoveredUnitTrait);
 
-                let unitTrait = { count: 0, traitName: hoveredTrait };
+                let unitTrait = { count: 0, traitName: hoveredUnitTrait };
 
                 for (const trait of gamestate.traits) {
-                    if (hoveredTrait === trait.traitName) {
+                    if (hoveredUnitTrait === trait.traitName) {
                         unitTrait = trait;
                         break;
                     }
                 }
 
                 setTraitToDisplay(createTraitInfo(unitTrait));
+            } else {
+                setTraitToDisplay(null);
+                setHoveredTrait(NO_UNIT_TRAIT_SELECTED);
             }
-
-            setShowUnitTraitInfoBox(isUnitTraitsHovered);
         } catch (error) {
             console.log("Error with: Hovering Unit Traits");
             // log error to server?
             console.log(error);
         }
-    }, [hoveredTrait, isUnitTraitsHovered, gamestate?.traits]);
+    }, [hoveredUnitTrait, isUnitTraitsHovered, gamestate?.traits]);
 
     const traitTiles = [];
     for (let i = 0; i < 9; i++) {
@@ -343,7 +359,7 @@ function App() {
                 )}
 
                 <div className={styles.traitsList}>{traitTiles}</div>
-                {traitToDisplay && (
+                {traitIndex > -1 && traitToDisplay && (
                     <TraitInfoBox
                         type="traitsList"
                         traitObj={traitToDisplay || undefined}
@@ -360,16 +376,16 @@ function App() {
                     <AbilityInfoBox ability={abilityToDisplay || undefined} />
                 )}
 
-                {showUnitTraitInfoBox && (
+                {hoveredUnitTrait && traitToDisplay && (
                     <TraitInfoBox
                         type="unitTrait"
                         traitObj={traitToDisplay || undefined}
                     />
                 )}
 
-                {hoveredStat && showStatInfoBox && (
+                {hoveredStat && statsToDisplay && showStatInfoBox && (
                     <StatInfoBox
-                        stats={statsToDisplay || undefined}
+                        stats={statsToDisplay}
                         hoveredStat={hoveredStat}
                     />
                 )}

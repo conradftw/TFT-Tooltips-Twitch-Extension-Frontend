@@ -1,20 +1,12 @@
 import React from "react";
 import styles from "./StatInfoBox.module.css";
 import DOMPurify from "dompurify";
-import { StatInfo, UnitStatsInfo } from "../../types/InfoBoxProps";
+import { UnitStatsInfo } from "../../types/InfoBoxProps";
 
 type StatInfoBoxProps = {
-    hoveredStat?: string;
-    stats?: UnitStatsInfo;
+    hoveredStat: string;
+    stats: UnitStatsInfo;
 };
-
-// stat = {
-//     type: "armor",
-//     description: "Reduces physical damage taken.",
-//     mainBody: `<p>Current Armor: <span class="bonusStat">15</span> (<span class="baseStat">15</span> + <span class="bonusStat">0</span>) <br/>
-//                 This champion takes <span class="bonusStat">13</span>% reduced physical damage
-//             </p>`,
-// },
 
 const StatInfoBox = ({
     hoveredStat = "attack_damage",
