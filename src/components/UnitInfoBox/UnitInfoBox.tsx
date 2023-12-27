@@ -104,18 +104,11 @@ const UnitInfoBox = ({
     setHoveredTrait,
     setHoveredStat,
 }: UnitInfoBoxProps) => {
-    const [isAbilitySquareHovered, setIsAbilitySquareHovered] = useState(false);
-
-    useEffect(() => {
-        onHoverAbilitySquare(isAbilitySquareHovered);
-    }, [onHoverAbilitySquare, isAbilitySquareHovered]);
-
     const unitTraits = [];
     for (const trait of unit.traits) {
         const unitTrait = (
             <HoverWrapper
                 type="unitTrait"
-                // valueHovered={trait.name}
                 valueHovered={[trait.name, ""]}
                 sendValueHovered={setHoveredTrait}
                 key={trait.name}
@@ -148,7 +141,6 @@ const UnitInfoBox = ({
         const statItem = (
             <HoverWrapper
                 type="statItem"
-                // valueHovered={statType}
                 valueHovered={[statType, ""]}
                 key={statType}
                 sendValueHovered={setHoveredStat}
@@ -234,7 +226,8 @@ const UnitInfoBox = ({
                     <div className={styles.squares}>
                         <HoverWrapper
                             type="square"
-                            setIsHovered={setIsAbilitySquareHovered}
+                            valueHovered={[true, false]}
+                            sendValueHovered={onHoverAbilitySquare}
                         >
                             <AbilitySquare champion={unit.name} />
                         </HoverWrapper>

@@ -26,11 +26,11 @@ import { ErrorBoundary } from "react-error-boundary";
 const zlib = require("react-zlib-js");
 const Buffer = require("buffer/").Buffer;
 
-const NO_TRAIT_SELECTED = -1;
-const NO_SHOP_UNIT_SELECTED = -1;
-
-const NO_UNIT_TRAIT_SELECTED = "";
-const NO_STAT_SELECTED = "";
+const TRAIT_NOT_HOVERED = -1;
+const SHOP_UNIT_NOT_HOVERED = -1;
+const UNIT_TRAIT_NOT_HOVERED = "";
+const UNIT_ABILITY_NOT_HOVERED = false;
+const UNIT_STAT_NOT_HOVERED = "";
 
 type OverlayResolution = {
     width: number;
@@ -57,19 +57,18 @@ function App() {
             height: document.body.clientHeight,
         });
 
-    const [shopUnitIndex, setShopUnitIndex] = useState(NO_SHOP_UNIT_SELECTED);
-    const [isShopListHovered, setIsShopListHovered] = useState(false);
-
-    const [traitIndex, setTraitIndex] = useState(NO_TRAIT_SELECTED);
-    const [isTraitListHovered, setIsTraitListHovered] = useState(false);
+    const [traitIndex, setTraitIndex] = useState(TRAIT_NOT_HOVERED);
+    const [shopUnitIndex, setShopUnitIndex] = useState(SHOP_UNIT_NOT_HOVERED);
 
     const [hoveredUnitTrait, setHoveredTrait] = useState(
-        NO_UNIT_TRAIT_SELECTED
+        UNIT_TRAIT_NOT_HOVERED
     );
 
-    const [showAbilityInfoBox, setShowAbilityInfoBox] = useState(false);
+    const [showAbilityInfoBox, setShowAbilityInfoBox] = useState(
+        UNIT_ABILITY_NOT_HOVERED
+    );
 
-    const [hoveredStat, setHoveredStat] = useState(NO_STAT_SELECTED);
+    const [hoveredStat, setHoveredStat] = useState(UNIT_STAT_NOT_HOVERED);
 
     const [gamestate, setGamestate] = useState<GamestateType | null>(null);
 
@@ -103,7 +102,7 @@ function App() {
         });
     };
 
-    const clearInfoBoxes = () => {
+    const clearUnitRelatedInfoBoxes = () => {
         setUnitToDisplay(null);
         setAbilityToDisplay(null);
         setStatsToDisplay(null);
@@ -142,7 +141,6 @@ function App() {
             console.error("Twitch Extension Helper Library not found");
         }
 
-        // handleResize();
         window.addEventListener("resize", handleResize);
 
         return () => {
@@ -165,7 +163,7 @@ function App() {
                 const y_1080 =
                     (event.clientY * 1080) / overlayResolution.height;
 
-                clearInfoBoxes();
+                clearUnitRelatedInfoBoxes();
 
                 if (gamestate?.units.length) {
                     let hoveredUnit = {} as UnitType;
@@ -223,42 +221,35 @@ function App() {
 
     useEffect(() => {
         try {
+            console.log("traitList useEffect");
             if (
                 traitIndex > -1 &&
-                // isTraitListHovered &&
                 gamestate?.traits.length &&
                 traitIndex < gamestate.traits.length
             ) {
                 console.log(gamestate.traits);
-                // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
                 console.log("traitIndex is: " + traitIndex);
                 setTraitToDisplay(
                     createTraitInfo(gamestate.traits[traitIndex])
                 );
-            } else {
-                console.log("is the trait reseting somehow?");
-                setTraitToDisplay(null);
-                setTraitIndex(NO_TRAIT_SELECTED);
             }
         } catch (error) {
             console.log("Error with: Hovering TraitsList");
             // log to server
             console.log(error);
         }
-        // }, [traitIndex, isTraitListHovered, gamestate?.traits]);
     }, [traitIndex, gamestate?.traits]);
 
     useEffect(() => {
+        console.log("Shop useEffect");
+
         try {
-            console.log("shop hovered");
-            // if (isShopListHovered && gamestate?.shopUnits.length) {
             if (
                 shopUnitIndex > -1 &&
                 shopUnitIndex < 5 &&
                 gamestate?.shopUnits.length
             ) {
                 console.log(gamestate.shopUnits);
-                // index into gamestates.trait and create a TraitInfo state to pass into TraitInfoBox
                 console.log("shopIndex is: " + shopUnitIndex);
                 const shopUnit = gamestate.shopUnits[shopUnitIndex];
 
@@ -269,24 +260,19 @@ function App() {
                 } else {
                     console.log("Shop: shop slot is sold");
                     setShopUnitToDisplay(null);
-                    // setShopUnitIndex(NO_SHOP_UNIT_SELECTED);
                 }
-            } else {
-                console.log("Shop: shop empty or index outof bounds");
-                setShopUnitToDisplay(null);
-                setShopUnitIndex(NO_SHOP_UNIT_SELECTED);
             }
         } catch (error) {
             console.log("Error with: Hovering Shop");
 
             console.log(error);
         }
-        // }, [shopUnitIndex, isShopListHovered, gamestate?.shopUnits]);
     }, [shopUnitIndex, gamestate?.shopUnits]);
 
     useEffect(() => {
+        console.log("unitTraits useEffect");
+
         try {
-            // if (isUnitTraitsHovered && gamestate?.traits.length) {
             if (hoveredUnitTrait && gamestate?.traits.length) {
                 console.log(gamestate.traits);
                 console.log("hoveredUnitTrait is: " + hoveredUnitTrait);
@@ -300,20 +286,13 @@ function App() {
                     }
                 }
 
-                // setTraitToDisplay(createTraitInfo(unitTrait));
                 setUnitTraitToDisplay(createTraitInfo(unitTrait));
-            } else {
-                console.log("should separate this traitobj and unittrait ig");
-                // setTraitToDisplay(null);
-                setUnitTraitToDisplay(null);
-                setHoveredTrait(NO_UNIT_TRAIT_SELECTED);
             }
         } catch (error) {
             console.log("Error with: Hovering Unit Traits");
             // log error to server?
             console.log(error);
         }
-        // }, [hoveredUnitTrait, isUnitTraitsHovered, gamestate?.traits]);
     }, [hoveredUnitTrait, gamestate?.traits]);
 
     const traitTiles = [];
@@ -321,9 +300,7 @@ function App() {
         const traitTile = (
             <HoverWrapper
                 type="traitTile"
-                setIsHovered={setIsTraitListHovered}
-                // valueHovered={i}
-                valueHovered={[i, NO_TRAIT_SELECTED]}
+                valueHovered={[i, TRAIT_NOT_HOVERED]}
                 sendValueHovered={setTraitIndex}
                 key={i}
             >
@@ -338,9 +315,7 @@ function App() {
         const shopTile = (
             <HoverWrapper
                 type="shopTile"
-                setIsHovered={setIsShopListHovered}
-                // valueHovered={i}
-                valueHovered={[i, NO_SHOP_UNIT_SELECTED]}
+                valueHovered={[i, SHOP_UNIT_NOT_HOVERED]}
                 sendValueHovered={setShopUnitIndex}
                 key={i}
             >
@@ -371,7 +346,7 @@ function App() {
                     />
                 )}
 
-                {shopUnitToDisplay && (
+                {shopUnitIndex > -1 && shopUnitToDisplay && (
                     <ShopUnitInfoBox ability={shopUnitToDisplay || undefined} />
                 )}
 
@@ -388,7 +363,6 @@ function App() {
                     />
                 )}
 
-                {/* {hoveredStat && statsToDisplay && showStatInfoBox && ( */}
                 {hoveredStat && statsToDisplay && (
                     <StatInfoBox
                         stats={statsToDisplay}

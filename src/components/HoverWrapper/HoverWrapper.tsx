@@ -5,10 +5,8 @@ import { debounce } from "lodash";
 interface HoverWrapperProps {
     type: string;
     children: ReactNode | null;
-    setIsHovered?: (isHovered: boolean) => void;
-    // valueHovered?: any; //
-    valueHovered?: [any, any];
-    sendValueHovered?: (value: any) => void;
+    valueHovered: [number, number] | [string, string] | [boolean, boolean]; //[any, any];
+    sendValueHovered: (value: any) => void; // ((value: number) => void) | ((value: string) => void)| ((value: boolean) => void)
 }
 
 const MOUSEENTER_DEBOUNCE_DELAY = 250;
@@ -17,28 +15,19 @@ const MOUSELEAVE_DEBOUNCE_DELAY = 200;
 const HoverWrapper = ({
     type,
     children,
-    setIsHovered,
-    // valueHovered = "",
-    valueHovered = ["", ""],
+    valueHovered,
     sendValueHovered,
 }: HoverWrapperProps) => {
     const debouncedHandleMouseEnter = debounce(() => {
-        if (setIsHovered) setIsHovered(true);
-
-        if (sendValueHovered) {
-            sendValueHovered(valueHovered[0]);
-        }
+        sendValueHovered(valueHovered[0]);
 
         console.log(`${type}: Hovered ${valueHovered}`);
     }, MOUSEENTER_DEBOUNCE_DELAY);
 
     const debouncedHandleMouseLeave = debounce(() => {
         debouncedHandleMouseEnter.cancel();
-        if (setIsHovered) setIsHovered(false);
 
-        if (sendValueHovered) {
-            sendValueHovered(valueHovered[1]);
-        }
+        sendValueHovered(valueHovered[1]);
 
         console.log(`${type}: Stopped Hovering ${valueHovered}`);
     }, MOUSELEAVE_DEBOUNCE_DELAY);
