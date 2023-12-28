@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import styles from "./UnitInfoBox.module.css";
 import AbilitySquare from "../AbilitySquare/AbilitySquare";
 import HoverWrapper from "../HoverWrapper/HoverWrapper";
@@ -17,7 +16,6 @@ const UnitInfoBox = ({
         displayName: "Ahri",
         cost: 2,
         star_level: 2,
-        // traits: ["mixmaster", "spellweaver", "kda"],
         traits: [
             {
                 internalName: "set10_dj",
@@ -44,49 +42,42 @@ const UnitInfoBox = ({
         stats: {
             attack_damage: {
                 type: "attack_damage",
-                // displayName: "Attack Damage",
                 total: 128,
                 base: 55,
                 bonus: 73,
             },
             ability_power: {
                 type: "ability_power",
-                // displayName: "Ability Power",
                 total: 100,
                 base: 100,
                 bonus: 0,
             },
             armor: {
                 type: "armor",
-                // displayName: "Armor",
                 total: 15,
                 base: 15,
                 bonus: 0,
             },
             magic_resist: {
                 type: "magic_resist",
-                // displayName: "Magic Resist",
                 total: 55,
                 base: 15,
                 bonus: 40,
             },
             attack_speed: {
                 type: "attack_speed",
-                // displayName: "Attack Speed",
                 total: 1.05,
                 base: 0.7,
                 bonus: 1.5,
             },
             crit_chance: {
                 type: "crit_chance",
-                // displayName: "Critical Strike Chance",
                 total: 80,
                 base: 25,
                 bonus: 55,
             },
             crit_damage: {
                 type: "crit_damage",
-                // displayName: "Critical Strike Damage",
                 total: 140,
                 base: 140,
                 bonus: 0,

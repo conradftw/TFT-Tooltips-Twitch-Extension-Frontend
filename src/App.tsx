@@ -21,6 +21,8 @@ import {
 } from "./utils/createInfoBoxProps";
 import { GamestateType, UnitType } from "./types/Gamestate";
 import { expandCompactGamestate } from "./utils/expandCompactGamestate";
+import { isPointInsideBoundingBox } from "./utils/isPointInsideBoundingBox";
+import { parseCompressedJsonToCompactGamestate } from "./utils/parseCompressedJsonToCompactGamestate";
 import { ErrorBoundary } from "react-error-boundary";
 
 const zlib = require("react-zlib-js");
@@ -58,6 +60,7 @@ function App() {
         });
 
     const [traitIndex, setTraitIndex] = useState(TRAIT_NOT_HOVERED);
+
     const [shopUnitIndex, setShopUnitIndex] = useState(SHOP_UNIT_NOT_HOVERED);
 
     const [hoveredUnitTrait, setHoveredTrait] = useState(
@@ -94,7 +97,7 @@ function App() {
 
     const handleResize = () => {
         console.log(
-            `resized: ${document.body.clientWidth} x ${document.body.clientHeight}`
+            `Resized: ${document.body.clientWidth} x ${document.body.clientHeight}`
         );
         setOverlayResolution({
             width: document.body.clientWidth,
@@ -109,23 +112,20 @@ function App() {
     };
 
     useEffect(() => {
-        console.log("pretty sure therse is a rerender per useeffect lol");
+        console.log("appDidMount: runs only on initial mount");
         function handleListen(
             target: string,
             contentType: string,
             message: string
         ) {
-            const inflated = zlib
-                .inflateSync(Buffer.from(message, "base64"))
-                .toString();
-
-            const data = JSON.parse(inflated);
+            const data = parseCompressedJsonToCompactGamestate(message);
             console.log(data);
+            // console.log("message: hello 123");
             setGamestate(expandCompactGamestate(data));
         }
 
         if (window.Twitch.ext) {
-            console.log("plSs only get called once");
+            console.log("Twitch Extension Helper is set up");
             window.Twitch.ext.onAuthorized(function (auth) {
                 console.log(
                     "The JWT that will be passed to the EBS is",
@@ -133,9 +133,12 @@ function App() {
                 );
                 console.log("The Helix JWT is ", auth.helixToken);
                 console.log("The channel ID is", auth.channelId);
+
+                // window.Twitch.ext.listen("broadcast", handleListen);
             });
 
             // okay the problem is it seems I can attach more than one function to this broadcast listen
+            // like with StrictMode, this gets called twice and two handleListens are binded to broadcast
             window.Twitch.ext.listen("broadcast", handleListen);
         } else {
             console.error("Twitch Extension Helper Library not found");
@@ -144,7 +147,9 @@ function App() {
         window.addEventListener("resize", handleResize);
 
         return () => {
-            console.log("Calling MAIN APP ONMOUNT CLEAN UP");
+            console.log(
+                "appWillUnmount: called when this component is unMounted"
+            );
             window.removeEventListener("resize", handleResize);
             window.Twitch.ext.unlisten("broadcast", handleListen);
         };
@@ -155,59 +160,83 @@ function App() {
         const handleMouseMove = (event: MouseEvent) => {
             window.clearTimeout(timer);
             timer = window.setTimeout(() => {
-                console.log(
-                    `Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`
-                );
+                try {
+                    console.log(
+                        `Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`
+                    );
 
-                const x_1920 = (event.clientX * 1920) / overlayResolution.width;
-                const y_1080 =
-                    (event.clientY * 1080) / overlayResolution.height;
+                    const x_1920 =
+                        (event.clientX * 1920) / overlayResolution.width;
+                    const y_1080 =
+                        (event.clientY * 1080) / overlayResolution.height;
 
-                clearUnitRelatedInfoBoxes();
+                    clearUnitRelatedInfoBoxes();
 
-                if (gamestate?.units.length) {
-                    let hoveredUnit = {} as UnitType;
-                    for (const unit of gamestate.units) {
-                        const corner1 = unit.bounding_box.corner1;
-                        const corner2 = unit.bounding_box.corner2;
+                    if (gamestate?.units.length) {
+                        let hoveredUnit = {} as UnitType;
+                        for (const unit of gamestate.units) {
+                            const corner1 = unit.bounding_box.corner1;
+                            const corner2 = unit.bounding_box.corner2;
 
-                        if (
-                            x_1920 >= corner1.x &&
-                            x_1920 <= corner2.x &&
-                            y_1080 >= corner1.y &&
-                            y_1080 <= corner2.y
-                        ) {
-                            if (Object.keys(hoveredUnit).length) {
-                                const hoveredUnitCorner1 =
-                                    hoveredUnit.bounding_box.corner1;
-                                const hoveredUnitCorner2 =
-                                    hoveredUnit.bounding_box.corner2;
+                            // if (
+                            //     x_1920 >= corner1.x &&
+                            //     x_1920 <= corner2.x &&
+                            //     y_1080 >= corner1.y &&
+                            //     y_1080 <= corner2.y
+                            // ) {
+                            if (
+                                isPointInsideBoundingBox(
+                                    { x: x_1920, y: y_1080 },
+                                    unit.bounding_box
+                                )
+                            ) {
+                                // if point is in overlapping boxes, return the "closest" unit, (which is the box with the y coord closest to the bottom of screen)
+                                if (Object.keys(hoveredUnit).length) {
+                                    const hoveredUnitCorner1 =
+                                        hoveredUnit.bounding_box.corner1;
+                                    const hoveredUnitCorner2 =
+                                        hoveredUnit.bounding_box.corner2;
 
-                                if (
-                                    x_1920 >= hoveredUnitCorner1.x &&
-                                    x_1920 <= hoveredUnitCorner2.x &&
-                                    y_1080 >= hoveredUnitCorner1.y &&
-                                    y_1080 <= hoveredUnitCorner2.y &&
-                                    corner2.y > hoveredUnitCorner2.y
-                                ) {
+                                    // if (
+                                    //     x_1920 >= hoveredUnitCorner1.x &&
+                                    //     x_1920 <= hoveredUnitCorner2.x &&
+                                    //     y_1080 >= hoveredUnitCorner1.y &&
+                                    //     y_1080 <= hoveredUnitCorner2.y &&
+                                    //     corner2.y > hoveredUnitCorner2.y
+                                    // ) {
+
+                                    if (
+                                        isPointInsideBoundingBox(
+                                            { x: x_1920, y: y_1080 },
+                                            hoveredUnit.bounding_box
+                                        ) &&
+                                        corner2.y > hoveredUnitCorner2.y
+                                    ) {
+                                        hoveredUnit = unit;
+                                    }
+                                } else {
                                     hoveredUnit = unit;
                                 }
-                            } else {
-                                hoveredUnit = unit;
                             }
                         }
-                    }
 
-                    if (Object.keys(hoveredUnit).length) {
-                        console.log("Creating unit to display");
-                        const unitInfo = createUnitInfo(hoveredUnit);
-                        console.log(unitInfo);
-                        const unitStatsInfo = createUnitStatsInfo(hoveredUnit);
-                        console.log(unitStatsInfo);
-                        setUnitToDisplay(unitInfo);
-                        setAbilityToDisplay(unitInfo.ability);
-                        setStatsToDisplay(unitStatsInfo);
+                        if (Object.keys(hoveredUnit).length) {
+                            console.log("Creating unit to display");
+                            const unitInfo = createUnitInfo(hoveredUnit);
+                            console.log(unitInfo);
+                            const unitStatsInfo =
+                                createUnitStatsInfo(hoveredUnit);
+                            console.log(unitStatsInfo);
+                            setUnitToDisplay(unitInfo);
+                            setAbilityToDisplay(unitInfo.ability);
+                            setStatsToDisplay(unitStatsInfo);
+                        }
                     }
+                } catch (error) {
+                    console.error(
+                        "Error inside setTimeout function for handleMouseMove"
+                    );
+                    console.error(error);
                 }
             }, 300);
         };
@@ -221,7 +250,7 @@ function App() {
 
     useEffect(() => {
         try {
-            console.log("traitList useEffect");
+            // console.log("traitList useEffect");
             if (
                 traitIndex > -1 &&
                 gamestate?.traits.length &&
@@ -234,14 +263,19 @@ function App() {
                 );
             }
         } catch (error) {
-            console.log("Error with: Hovering TraitsList");
+            console.error("Error with: Hovering TraitsList");
             // log to server
-            console.log(error);
+            console.error(error);
         }
+
+        // return () => {
+        //     console.log("traitList cleanup");
+        //     setTraitToDisplay(null);
+        // };
     }, [traitIndex, gamestate?.traits]);
 
     useEffect(() => {
-        console.log("Shop useEffect");
+        // console.log("Shop useEffect");
 
         try {
             if (
@@ -263,14 +297,14 @@ function App() {
                 }
             }
         } catch (error) {
-            console.log("Error with: Hovering Shop");
-
-            console.log(error);
+            console.error("Error with: Hovering Shop");
+            // log to server
+            console.error(error);
         }
     }, [shopUnitIndex, gamestate?.shopUnits]);
 
     useEffect(() => {
-        console.log("unitTraits useEffect");
+        // console.log("unitTraits useEffect");
 
         try {
             if (hoveredUnitTrait && gamestate?.traits.length) {
@@ -289,9 +323,9 @@ function App() {
                 setUnitTraitToDisplay(createTraitInfo(unitTrait));
             }
         } catch (error) {
-            console.log("Error with: Hovering Unit Traits");
-            // log error to server?
-            console.log(error);
+            console.error("Error with: Hovering Unit Traits");
+            // log to server
+            console.error(error);
         }
     }, [hoveredUnitTrait, gamestate?.traits]);
 
