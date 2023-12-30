@@ -77,3 +77,7 @@ code {
     float: right;
     padding-left: 10%;
 }
+
+.inactiveScaling {
+    color: #4a4b49;
+}

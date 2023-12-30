@@ -6,11 +6,40 @@ import {
     AbilityInfo,
     UnitStatsInfo,
 } from "../types/InfoBoxProps";
-import { traitDetails, traitNameVariations } from "./traitDetails";
+import { traitNameVariations } from "./traitDetails";
 import { championDetails } from "./championDetails";
 import { statDetails } from "./statDetails";
 
-export const createTraitInfo = (simpleTrait: TraitType): TraitInfo => {
+export type ChampionAbilityDetails = {
+    [name: string]: number[];
+};
+
+export type AbilityDetailsType = {
+    [name: string]: ChampionAbilityDetails;
+};
+
+export type TraitDetailsType = {
+    [traitName: string]: {
+        name: string;
+        displayName: string;
+        traitDescription: string;
+        intervals: {
+            count: number;
+            text: string;
+        }[];
+        champions: {
+            name: string;
+            displayName: string;
+            cost: number;
+            traits: string[];
+        }[];
+    };
+};
+
+export const createTraitInfo = (
+    simpleTrait: TraitType,
+    traitDetails: TraitDetailsType
+): TraitInfo => {
     const traitInfo = {} as TraitInfo;
 
     const detailedTrait = traitDetails[simpleTrait.traitName];
@@ -18,9 +47,9 @@ export const createTraitInfo = (simpleTrait: TraitType): TraitInfo => {
     traitInfo.name = detailedTrait.name;
     traitInfo.displayName = detailedTrait.displayName;
     traitInfo.activeCount = simpleTrait.count;
-    traitInfo.description = detailedTrait.getTraitDescription();
-    traitInfo.intervals = detailedTrait.getIntervals();
-    traitInfo.champions = detailedTrait.getChampions();
+    traitInfo.description = detailedTrait.traitDescription;
+    traitInfo.intervals = detailedTrait.intervals;
+    traitInfo.champions = detailedTrait.champions;
 
     return traitInfo;
 };
@@ -38,7 +67,10 @@ export const createShopUnitInfo = (
     return shopUnit;
 };
 
-export const createUnitInfo = (unit: UnitType): UnitInfo => {
+export const createUnitInfo = (
+    unit: UnitType,
+    abilityDetails: AbilityDetailsType
+): UnitInfo => {
     const unitInfo = {} as UnitInfo;
 
     if (!Object.keys(unit).length) {
@@ -67,30 +99,44 @@ export const createUnitInfo = (unit: UnitType): UnitInfo => {
         unitInfo.position_type = champion.position_type;
         unitInfo.range = unit.currentAttackRange;
 
-        // oh fuck i screwed up, redo this later
-        // change UnitType to be more array based?
         unitInfo.stats = unit.stats;
 
         unitInfo.ability = {
             champion: champion.name,
             name: champion.getAbilityName(),
-            mainBody: champion.getAbilityMainText(unit),
-            details: champion.getAbilityDetails(unit),
+            mainBody: champion.getAbilityMainText(
+                unit,
+                abilityDetails[unit.name]
+            ),
+            details: champion.getAbilityDetails(
+                unit,
+                abilityDetails[unit.name]
+            ),
         };
     }
 
     return unitInfo;
 };
 
-export const createAbilityInfo = (unit: UnitType): AbilityInfo => {
+export const createAbilityInfo = (
+    unit: UnitType,
+
+    abilityDetails: AbilityDetailsType
+): AbilityInfo => {
     const abilityInfo = {} as AbilityInfo;
 
     const champion = championDetails[unit.name];
 
     abilityInfo.champion = champion.name;
     abilityInfo.name = champion.getAbilityName();
-    abilityInfo.mainBody = champion.getAbilityMainText(unit);
-    abilityInfo.details = champion.getAbilityDetails(unit);
+    abilityInfo.mainBody = champion.getAbilityMainText(
+        unit,
+        abilityDetails[unit.name]
+    );
+    abilityInfo.details = champion.getAbilityDetails(
+        unit,
+        abilityDetails[unit.name]
+    );
 
     return abilityInfo;
 };
