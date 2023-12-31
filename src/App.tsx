@@ -33,7 +33,7 @@ const UNIT_TRAIT_NOT_HOVERED = "";
 const UNIT_ABILITY_NOT_HOVERED = false;
 const UNIT_STAT_NOT_HOVERED = "";
 
-const RESET_DATA_DURATION = 10000;
+const RESET_DATA_DURATION = 30000;
 
 type OverlayResolution = {
     width: number;
@@ -154,7 +154,6 @@ function App() {
         ) {
             const data = parseCompressedJsonToCompactGamestate(message);
             console.log(data);
-            // console.log("message: hello 123");
             setGamestate(expandCompactGamestate(data));
 
             window.clearTimeout(receivedDataTimer);
@@ -203,8 +202,6 @@ function App() {
                 // console.log("The channel ID is", auth.channelId);
             });
 
-            // okay the problem is it seems I can attach more than one function to this broadcast listen
-            // like with StrictMode, this gets called twice and two handleListens are binded to broadcast
             window.Twitch.ext.listen("broadcast", handleListen);
         } else {
             console.error(
@@ -279,7 +276,6 @@ function App() {
                         if (Object.keys(hoveredUnit).length && abilityDetails) {
                             console.log("Creating unit to display");
 
-                            // const unitInfo = createUnitInfo(hoveredUnit);
                             const unitInfo = createUnitInfo(
                                 hoveredUnit,
                                 abilityDetails
@@ -315,7 +311,6 @@ function App() {
 
     useEffect(() => {
         try {
-            // console.log("traitList useEffect");
             if (
                 traitIndex > -1 &&
                 gamestate?.traits.length &&
@@ -344,8 +339,6 @@ function App() {
     }, [traitIndex, gamestate?.traits, traitDetails]);
 
     useEffect(() => {
-        // console.log("Shop useEffect");
-
         try {
             if (
                 shopUnitIndex > -1 &&
@@ -376,8 +369,6 @@ function App() {
     }, [shopUnitIndex, gamestate?.shopUnits]);
 
     useEffect(() => {
-        // console.log("unitTraits useEffect");
-
         try {
             if (hoveredUnitTrait && gamestate?.traits.length && traitDetails) {
                 console.log(gamestate.traits);
