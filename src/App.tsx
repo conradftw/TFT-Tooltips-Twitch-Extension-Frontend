@@ -33,6 +33,8 @@ const UNIT_TRAIT_NOT_HOVERED = "";
 const UNIT_ABILITY_NOT_HOVERED = false;
 const UNIT_STAT_NOT_HOVERED = "";
 
+const RESET_DATA_DURATION = 10000;
+
 type OverlayResolution = {
     width: number;
     height: number;
@@ -45,14 +47,14 @@ type ErrorBoundaryProps = {
 function ErrorFallback({ error }: ErrorBoundaryProps) {
     return (
         <div role="alert">
-            <h1>EXTENSION CRASHED ICANT</h1>
-            <p>
+            <h1 style={{ color: "red" }}>EXTENSION CRASHED ICANT</h1>
+            <p style={{ color: "red" }}>
                 If you can see this text, it means the extension has crashed due
-                to some bug xdd
-            </p>
-            <p>
-                If you can see this text, it means the extension has crashed due
-                to some bug xdd
+                to an unforeseen error. Please refresh the page to restart the
+                extension and get rid of this message. If you keep encountering
+                errors, disable the extension by using widget on the right and
+                toggling "Visible", then message the dev on Discord so that they
+                can investigate and fix the bug.
             </p>
             <pre style={{ color: "red" }}>{error.message}</pre>
         </div>
@@ -65,6 +67,8 @@ function App() {
     const [traitDetails, setTraitDetails] = useState<TraitDetailsType | null>(
         null
     );
+
+    const [gamestate, setGamestate] = useState<GamestateType | null>(null);
 
     const [overlayResolution, setOverlayResolution] =
         useState<OverlayResolution>({
@@ -85,8 +89,6 @@ function App() {
     );
 
     const [hoveredStat, setHoveredStat] = useState(UNIT_STAT_NOT_HOVERED);
-
-    const [gamestate, setGamestate] = useState<GamestateType | null>(null);
 
     const [traitToDisplay, setTraitToDisplay] = useState<TraitInfo | null>(
         null
@@ -116,21 +118,6 @@ function App() {
             width: document.body.clientWidth,
             height: document.body.clientHeight,
         });
-
-        const githubTest = async () => {
-            const url =
-                "https://raw.githubusercontent.com/conradftw/TFT_Data/main/details/abilities/latest.json";
-            const response = await fetch(url);
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-            } else {
-                console.log("Trouble fetching from github");
-            }
-        };
-
-        // githubTest();
     };
 
     const clearUnitRelatedInfoBoxes = () => {
@@ -141,6 +128,25 @@ function App() {
 
     useEffect(() => {
         console.log("appDidMount: runs only on initial mount");
+        let receivedDataTimer: number;
+
+        const clearAllState = () => {
+            setGamestate(null);
+
+            setTraitIndex(TRAIT_NOT_HOVERED);
+            setShopUnitIndex(SHOP_UNIT_NOT_HOVERED);
+            setHoveredTrait(UNIT_TRAIT_NOT_HOVERED);
+            setShowAbilityInfoBox(UNIT_ABILITY_NOT_HOVERED);
+            setHoveredStat(UNIT_STAT_NOT_HOVERED);
+
+            setTraitToDisplay(null);
+            setShopUnitToDisplay(null);
+            setUnitTraitToDisplay(null);
+            setUnitToDisplay(null);
+            setAbilityToDisplay(null);
+            setStatsToDisplay(null);
+        };
+
         function handleListen(
             target: string,
             contentType: string,
@@ -150,6 +156,16 @@ function App() {
             console.log(data);
             // console.log("message: hello 123");
             setGamestate(expandCompactGamestate(data));
+
+            window.clearTimeout(receivedDataTimer);
+            receivedDataTimer = window.setTimeout(() => {
+                console.log(
+                    `Did not receive data within ${
+                        RESET_DATA_DURATION / 1000
+                    } second window, clearing all info boxes.`
+                );
+                clearAllState();
+            }, RESET_DATA_DURATION);
         }
 
         const getAbilityAndTraitDetails = async () => {
@@ -206,6 +222,7 @@ function App() {
                 "appWillUnmount: called when this component is unMounted"
             );
             window.removeEventListener("resize", handleResize);
+            window.clearTimeout(receivedDataTimer);
         };
     }, []);
 
@@ -292,6 +309,7 @@ function App() {
 
         return () => {
             document.removeEventListener("click", handleMouseMove);
+            window.clearTimeout(timer);
         };
     }, [overlayResolution, gamestate?.units, abilityDetails]);
 

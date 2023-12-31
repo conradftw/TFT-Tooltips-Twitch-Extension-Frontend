@@ -143,6 +143,9 @@ const UnitInfoBox = ({
                 />
 
                 {Math.round(stat.total * 100) / 100}
+                {statType === "crit_chance" || statType === "crit_damage"
+                    ? "%"
+                    : ""}
             </HoverWrapper>
         );
         statItems.push(statItem);
@@ -156,6 +159,15 @@ const UnitInfoBox = ({
         }
         return unit.cost * Math.pow(3, unit.star_level - 1) - 1;
     };
+
+    const healthWidth = unit.totalHealth
+        ? (unit.currentHealth * 100) / unit.totalHealth
+        : 0;
+    const manaWidth = unit.totalMana
+        ? (unit.currentMana * 100) / unit.totalMana
+        : 0;
+
+    // throw new Error();
 
     return (
         <div className={styles.border1}>
@@ -199,17 +211,24 @@ const UnitInfoBox = ({
                 </div>
 
                 <div className={styles.resources}>
-                    <div
-                        className={styles.health}
-                        // style={{ width: `${healthWidth}%` }}
-                    >
-                        {unit.currentHealth} / {unit.totalHealth}
+                    <div className={styles.health}>
+                        <div
+                            className={styles.healthBar}
+                            style={{ width: `${healthWidth}%` }}
+                        ></div>
+
+                        <p className={styles.healthText}>
+                            {unit.currentHealth} / {unit.totalHealth}
+                        </p>
                     </div>
-                    <div
-                        className={styles.mana}
-                        // style={{ width: `${manaWidth}%` }}
-                    >
-                        {unit.currentMana} / {unit.totalMana}
+                    <div className={styles.mana}>
+                        <div
+                            className={styles.manaBar}
+                            style={{ width: `${manaWidth}%` }}
+                        ></div>
+                        <p className={styles.manaText}>
+                            {unit.currentMana} / {unit.totalMana}
+                        </p>
                     </div>
                 </div>
 

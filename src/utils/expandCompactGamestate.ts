@@ -1,5 +1,17 @@
 import { GamestateType, CompactGamestateType } from "../types/Gamestate";
 
+// const starLevelIncreases: {
+//     [starLevel: number]: number;
+// } = {
+//     0: 1,
+//     1: 1,
+//     2: 1.5,
+//     3: 2.25,
+//     4: 2.25,
+// };
+
+const starLevelAdIncreases = [1, 1, 1.5, 2.25, 2.25];
+
 export const expandCompactGamestate = (
     compactGamestate: CompactGamestateType
 ): GamestateType => {
@@ -55,9 +67,13 @@ export const expandCompactGamestate = (
                 attack_damage: {
                     type: "attack_damage",
                     // displayName: "Attack Damage",
-                    total: Math.round(unit.tb * (1 + unit.t)),
-                    base: unit.tb,
-                    bonus: Math.round(unit.tb * unit.t),
+                    total: Math.round(
+                        unit.tb * starLevelAdIncreases[unit.l] * (1 + unit.t)
+                    ),
+                    base: unit.tb * starLevelAdIncreases[unit.l],
+                    bonus: Math.round(
+                        unit.tb * starLevelAdIncreases[unit.l] * unit.t
+                    ),
                 },
                 ability_power: {
                     type: "ability_power",

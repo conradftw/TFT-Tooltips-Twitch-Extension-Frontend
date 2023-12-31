@@ -157,9 +157,7 @@ const TraitInfoBox = ({
                 dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(traitObj.description),
                 }}
-            >
-                {/* {traitObj.description} */}
-            </div>
+            ></div>
             <ul className={styles.intervalsList}>{intervalItems}</ul>
             <div className={styles.championSquaresContainer}>
                 <div className={styles.championSquares}>{championSquares}</div>

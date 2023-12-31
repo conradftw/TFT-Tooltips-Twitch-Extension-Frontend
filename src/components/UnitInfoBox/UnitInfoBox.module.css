@@ -159,15 +159,35 @@ ul {
 
 .health {
     height: 50%;
-    background-color: green;
+    position: relative;
+    /* border: 1px solid red; */
+}
 
-    display: flex;
-    justify-content: center;
+.healthBar {
+    height: 100%;
+    background-color: green;
+}
+
+.manaBar {
+    height: 100%;
+    background-color: #022a4f;
+}
+
+.healthText,
+.manaText {
+    margin: 0;
+    /* border: 1px solid pink; */
+    position: absolute;
+    top: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
 }
 
 .mana {
     height: 50%;
-    background-color: #022a4f;
+    position: relative;
+    /* border: 1px solid red; */
 }
 
 .firstRowSquares {

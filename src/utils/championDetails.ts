@@ -573,7 +573,9 @@ export const championDetails: {
             }%</span> = ${
                 percentDamageRatio * 100
             }% (<img src="general/stats/ability_power.png"/>)<br/>
-            Nearby Enemy Damage: <span class="physicalDamage">${splashDamage}</span> = <span class="effectText">${
+            Nearby Enemy Damage: <span class="physicalDamage">${Math.round(
+                splashDamage
+            )}</span> = <span class="effectText">${
                 percentDamage * 100
             }%</span> of <span class="physicalDamage">${damage}</span><br/>
 
