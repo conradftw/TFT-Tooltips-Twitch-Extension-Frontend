@@ -4,93 +4,14 @@ import HoverWrapper from "../HoverWrapper/HoverWrapper";
 import { UnitInfo } from "../../types/InfoBoxProps";
 
 type UnitInfoBoxProps = {
-    unit?: UnitInfo;
+    unit: UnitInfo;
     onHoverAbilitySquare: (showAbilityInfoBox: boolean) => void;
     setHoveredTrait: (hoveredTrait: string) => void;
     setHoveredStat: (hoveredStat: string) => void;
 };
 
 const UnitInfoBox = ({
-    unit = {
-        name: "ahri",
-        displayName: "Ahri",
-        cost: 2,
-        star_level: 2,
-        traits: [
-            {
-                internalName: "set10_dj",
-                name: "mixmaster",
-                displayName: "Mixmaster",
-            },
-            {
-                internalName: "set10_spellweaver",
-                name: "spellweaver",
-                displayName: "Spellweaver",
-            },
-            {
-                internalName: "set10_kda",
-                name: "kda",
-                displayName: "K/DA",
-            },
-        ],
-        currentHealth: 70,
-        totalHealth: 100,
-        currentMana: 50,
-        totalMana: 100,
-        position_type: "front",
-        range: 4,
-        stats: {
-            attack_damage: {
-                type: "attack_damage",
-                total: 128,
-                base: 55,
-                bonus: 73,
-            },
-            ability_power: {
-                type: "ability_power",
-                total: 100,
-                base: 100,
-                bonus: 0,
-            },
-            armor: {
-                type: "armor",
-                total: 15,
-                base: 15,
-                bonus: 0,
-            },
-            magic_resist: {
-                type: "magic_resist",
-                total: 55,
-                base: 15,
-                bonus: 40,
-            },
-            attack_speed: {
-                type: "attack_speed",
-                total: 1.05,
-                base: 0.7,
-                bonus: 1.5,
-            },
-            crit_chance: {
-                type: "crit_chance",
-                total: 80,
-                base: 25,
-                bonus: 55,
-            },
-            crit_damage: {
-                type: "crit_damage",
-                total: 140,
-                base: 140,
-                bonus: 0,
-            },
-        },
-        ability: {
-            champion: "jinx",
-            name: "Escalation",
-            mainBody: `<p<b>Passive Minigun: </b> Attacks grant 4% (<img src="general/stats/ability_power.png"/>) 
-                    xddasdasda <hr/> sdaaaaaaaaaaaaaaaaaa</p>`,
-            details: `xdd`,
-        },
-    },
+    unit,
     onHoverAbilitySquare,
     setHoveredTrait,
     setHoveredStat,

@@ -21,7 +21,7 @@ const HoverWrapper = ({
     const debouncedHandleMouseEnter = debounce(() => {
         sendValueHovered(valueHovered[0]);
 
-        console.log(`${type}: Hovered ${valueHovered}`);
+        // console.log(`${type}: Hovered ${valueHovered}`);
     }, MOUSEENTER_DEBOUNCE_DELAY);
 
     const debouncedHandleMouseLeave = debounce(() => {
@@ -29,7 +29,7 @@ const HoverWrapper = ({
 
         sendValueHovered(valueHovered[1]);
 
-        console.log(`${type}: Stopped Hovering ${valueHovered}`);
+        // console.log(`${type}: Stopped Hovering ${valueHovered}`);
     }, MOUSELEAVE_DEBOUNCE_DELAY);
 
     return (

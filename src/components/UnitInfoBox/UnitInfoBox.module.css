@@ -25,6 +25,7 @@ ul {
     width: calc((215 / 1920) * 100%);
 
     width: 12.5%;
+    width: 14%;
 
     overflow: hidden;
 }

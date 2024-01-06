@@ -8,6 +8,7 @@
 
     top: calc((346 / 1080) * 100%);
     right: calc((245 / 1920) * 100%);
+    right: 14.2%;
 
     width: calc((713 / 1920) * 100%);
     min-height: 25%;

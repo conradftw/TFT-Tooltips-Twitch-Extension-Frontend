@@ -108,8 +108,6 @@ function App() {
         null
     );
 
-    // console.log("rerender");
-
     const handleResize = () => {
         console.log(
             `Resized: ${document.body.clientWidth} x ${document.body.clientHeight}`
@@ -127,7 +125,6 @@ function App() {
     };
 
     useEffect(() => {
-        console.log("appDidMount: runs only on initial mount");
         let receivedDataTimer: number;
 
         const clearAllState = () => {
@@ -153,7 +150,7 @@ function App() {
             message: string
         ) {
             const data = parseCompressedJsonToCompactGamestate(message);
-            console.log(data);
+            // console.log(data);
             setGamestate(expandCompactGamestate(data));
 
             window.clearTimeout(receivedDataTimer);
@@ -169,11 +166,11 @@ function App() {
 
         const getAbilityAndTraitDetails = async () => {
             const abilitiesUrl =
-                "https://raw.githubusercontent.com/conradftw/TFT_Data/main/details/abilities/latest.json";
+                "https://raw.githubusercontent.com/conradftw/TFT_Data/main/set10/details/abilities/latest.json";
             const abilitiesResponse = await fetch(abilitiesUrl);
 
             const traitsUrl =
-                "https://raw.githubusercontent.com/conradftw/TFT_Data/main/details/traits/latest.json";
+                "https://raw.githubusercontent.com/conradftw/TFT_Data/main/set10/details/traits/latest.json";
             const traitsResponse = await fetch(traitsUrl);
 
             if (abilitiesResponse.ok && traitsResponse.ok) {
@@ -184,8 +181,9 @@ function App() {
                 console.log(traitsData);
                 setTraitDetails(traitsData);
             } else {
-                console.log("Trouble fetching from github");
+                console.error("Trouble fetching from github");
                 // should prolly throw error here since you can't continue w/o this file
+                throw new Error("Trouble fetching from github");
             }
         };
 
@@ -207,105 +205,90 @@ function App() {
             console.error(
                 "Unable to setup the Twitch Extension Helper Library"
             );
-            console.error(
-                "Should probably throw an error here and display ErrorBoundary because extension will not work w/o library"
+            throw new Error(
+                "Unable to setup the Twitch Extension Helper Library"
             );
         }
 
         window.addEventListener("resize", handleResize);
 
         return () => {
-            console.log(
-                "appWillUnmount: called when this component is unMounted"
-            );
             window.removeEventListener("resize", handleResize);
             window.clearTimeout(receivedDataTimer);
         };
     }, []);
 
     useEffect(() => {
-        let timer: number;
         const handleMouseMove = (event: MouseEvent) => {
-            window.clearTimeout(timer);
-            timer = window.setTimeout(() => {
-                try {
-                    console.log(
-                        `Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`
-                    );
+            console.log("Mouse Click Start");
 
-                    const x_1920 =
-                        (event.clientX * 1920) / overlayResolution.width;
-                    const y_1080 =
-                        (event.clientY * 1080) / overlayResolution.height;
+            console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 
-                    clearUnitRelatedInfoBoxes();
+            const x_1920 = (event.clientX * 1920) / overlayResolution.width;
+            const y_1080 = (event.clientY * 1080) / overlayResolution.height;
 
-                    if (gamestate?.units.length) {
-                        let hoveredUnit = {} as UnitType;
-                        for (const unit of gamestate.units) {
-                            const corner2 = unit.bounding_box.corner2;
+            clearUnitRelatedInfoBoxes();
+
+            if (gamestate?.units.length) {
+                let hoveredUnit = {} as UnitType;
+                for (const unit of gamestate.units) {
+                    const corner2 = unit.bounding_box.corner2;
+
+                    if (
+                        isPointInsideBoundingBox(
+                            { x: x_1920, y: y_1080 },
+                            unit.bounding_box
+                        )
+                    ) {
+                        // if point is in overlapping boxes, return the "closest" unit, (which is the box with the y coord closest to the bottom of screen)
+                        if (Object.keys(hoveredUnit).length) {
+                            const hoveredUnitCorner2 =
+                                hoveredUnit.bounding_box.corner2;
 
                             if (
                                 isPointInsideBoundingBox(
                                     { x: x_1920, y: y_1080 },
-                                    unit.bounding_box
-                                )
+                                    hoveredUnit.bounding_box
+                                ) &&
+                                corner2.y > hoveredUnitCorner2.y
                             ) {
-                                // if point is in overlapping boxes, return the "closest" unit, (which is the box with the y coord closest to the bottom of screen)
-                                if (Object.keys(hoveredUnit).length) {
-                                    const hoveredUnitCorner2 =
-                                        hoveredUnit.bounding_box.corner2;
-
-                                    if (
-                                        isPointInsideBoundingBox(
-                                            { x: x_1920, y: y_1080 },
-                                            hoveredUnit.bounding_box
-                                        ) &&
-                                        corner2.y > hoveredUnitCorner2.y
-                                    ) {
-                                        hoveredUnit = unit;
-                                    }
-                                } else {
-                                    hoveredUnit = unit;
-                                }
+                                hoveredUnit = unit;
                             }
-                        }
-
-                        console.log(hoveredUnit);
-
-                        if (Object.keys(hoveredUnit).length && abilityDetails) {
-                            console.log("Creating unit to display");
-
-                            const unitInfo = createUnitInfo(
-                                hoveredUnit,
-                                abilityDetails
-                            );
-                            console.log(unitInfo);
-
-                            const unitStatsInfo =
-                                createUnitStatsInfo(hoveredUnit);
-                            console.log(unitStatsInfo);
-
-                            setUnitToDisplay(unitInfo);
-                            setAbilityToDisplay(unitInfo.ability);
-                            setStatsToDisplay(unitStatsInfo);
+                        } else {
+                            hoveredUnit = unit;
                         }
                     }
-                } catch (error) {
-                    console.error(
-                        "Error inside setTimeout function for handleMouseMove (clicking)"
-                    );
-
-                    console.error(error);
                 }
-            }, 300);
+
+                console.log(hoveredUnit);
+
+                if (Object.keys(hoveredUnit).length && abilityDetails) {
+                    console.log("Creating unit to display");
+
+                    const unitInfo = createUnitInfo(
+                        hoveredUnit,
+                        abilityDetails
+                    );
+                    console.log(unitInfo);
+
+                    const unitStatsInfo = createUnitStatsInfo(hoveredUnit);
+                    // console.log(unitStatsInfo);
+
+                    setUnitToDisplay(unitInfo);
+                    setAbilityToDisplay(unitInfo.ability);
+                    setStatsToDisplay(unitStatsInfo);
+                }
+            } else {
+                console.log("Gamestate contains no units...");
+            }
+
+            console.log("Mouse Click ENd");
         };
 
         document.addEventListener("click", handleMouseMove);
 
         return () => {
             document.removeEventListener("click", handleMouseMove);
-            window.clearTimeout(timer);
         };
     }, [overlayResolution, gamestate?.units, abilityDetails]);
 
@@ -317,8 +300,8 @@ function App() {
                 traitIndex < gamestate.traits.length &&
                 traitDetails
             ) {
-                console.log(gamestate.traits);
-                console.log("traitIndex is: " + traitIndex);
+                // console.log(gamestate.traits);
+                // console.log("traitIndex is: " + traitIndex);
                 setTraitToDisplay(
                     createTraitInfo(gamestate.traits[traitIndex], traitDetails)
                 );
@@ -331,11 +314,6 @@ function App() {
             // log to server
             console.error(error);
         }
-
-        // return () => {
-        //     console.log("traitList cleanup");
-        //     setTraitToDisplay(null);
-        // };
     }, [traitIndex, gamestate?.traits, traitDetails]);
 
     useEffect(() => {
@@ -345,8 +323,8 @@ function App() {
                 shopUnitIndex < 5 &&
                 gamestate?.shopUnits.length
             ) {
-                console.log(gamestate.shopUnits);
-                console.log("shopIndex is: " + shopUnitIndex);
+                // console.log(gamestate.shopUnits);
+                // console.log("shopIndex is: " + shopUnitIndex);
                 const shopUnit = gamestate.shopUnits[shopUnitIndex];
 
                 if (shopUnit.cost && shopUnit.shopUnitName !== "sold") {
@@ -363,7 +341,6 @@ function App() {
             console.error("shopUnitIndex: " + shopUnitIndex);
             console.error("Shop: ");
             console.error(gamestate?.shopUnits);
-            // log to server
             console.error(error);
         }
     }, [shopUnitIndex, gamestate?.shopUnits]);
@@ -371,8 +348,8 @@ function App() {
     useEffect(() => {
         try {
             if (hoveredUnitTrait && gamestate?.traits.length && traitDetails) {
-                console.log(gamestate.traits);
-                console.log("hoveredUnitTrait is: " + hoveredUnitTrait);
+                // console.log(gamestate.traits);
+                // console.log("hoveredUnitTrait is: " + hoveredUnitTrait);
 
                 let unitTrait = { count: 0, traitName: hoveredUnitTrait };
 
@@ -388,11 +365,8 @@ function App() {
         } catch (error) {
             console.error("Error with: Hovering Unit Traits");
             console.error("Unit Trait Hovered: " + hoveredUnitTrait);
-
             console.error("TraitsList: ");
             console.error(gamestate?.traits);
-
-            // log to server
             console.error(error);
         }
     }, [hoveredUnitTrait, gamestate?.traits, traitDetails]);
@@ -436,33 +410,30 @@ function App() {
                         onHoverAbilitySquare={setShowAbilityInfoBox}
                         setHoveredTrait={setHoveredTrait}
                         setHoveredStat={setHoveredStat}
-                        unit={unitToDisplay || undefined}
+                        unit={unitToDisplay}
                     />
                 )}
 
                 <div className={styles.traitsList}>{traitTiles}</div>
 
                 {traitIndex > -1 && traitToDisplay && (
-                    <TraitInfoBox
-                        type="traitsList"
-                        traitObj={traitToDisplay || undefined}
-                    />
+                    <TraitInfoBox type="traitsList" traitObj={traitToDisplay} />
                 )}
 
                 {shopUnitIndex > -1 && shopUnitToDisplay && (
-                    <ShopUnitInfoBox ability={shopUnitToDisplay || undefined} />
+                    <ShopUnitInfoBox ability={shopUnitToDisplay} />
                 )}
 
                 <div className={styles.shopList}>{shopTiles}</div>
 
                 {showAbilityInfoBox && abilityToDisplay && (
-                    <AbilityInfoBox ability={abilityToDisplay || undefined} />
+                    <AbilityInfoBox ability={abilityToDisplay} />
                 )}
 
                 {hoveredUnitTrait && unitTraitToDisplay && (
                     <TraitInfoBox
                         type="unitTrait"
-                        traitObj={unitTraitToDisplay || undefined}
+                        traitObj={unitTraitToDisplay}
                     />
                 )}
 
