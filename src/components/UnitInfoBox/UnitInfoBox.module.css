@@ -24,18 +24,14 @@ ul {
     width: 11.1979%;
     width: calc((215 / 1920) * 100%);
 
-    width: 12.5%;
     width: 14%;
 
     overflow: hidden;
 }
 
 .unitInfoBox {
-    border: 3px solid #174344;
-
+    border: 0.3em solid #174344;
     background-color: #131c1b;
-    /* opacity: 0.5; */
-
     height: 100%;
 }
 
@@ -46,7 +42,6 @@ ul {
 }
 
 .starLevelIcon {
-    max-width: 100%;
     height: 80%;
 }
 
@@ -54,12 +49,7 @@ ul {
     position: relative;
     top: 0;
     left: 0;
-
-    height: 100%;
     height: calc((138 / 684) * 100%);
-    /* width: 100%; */
-
-    /* border: 10px solid red; */
 }
 
 .image1 {
@@ -72,10 +62,9 @@ ul {
 
 .traits {
     position: absolute;
-    top: calc((30 / 128) * 100%);
     top: 0;
     left: calc((8 / 216) * 100%);
-    left: 0;
+    /* left: 0; */
     height: 60%;
     display: flex;
 }
@@ -83,47 +72,23 @@ ul {
 .traitIcon {
     width: 1em;
     height: 1em;
-    padding-left: calc((15 / 216) * 100%);
 }
 
 .traitText {
     padding-left: calc((10 / 216) * 100%);
     text-transform: capitalize;
-    /* border: 1px solid pink; */
-    /* width: 100%; */
-}
-
-.traitContainer {
-    display: flex;
-    align-items: center;
-    margin: 0px 0;
-
-    border: 1px solid pink;
-}
-
-.champName {
-    position: absolute;
-    top: 0px;
-    left: 70px;
 }
 
 .costBanner {
     height: 4.28571%;
     height: calc((30 / 684) * 100%);
-    /* height: 40px; */
-    /* width: 100%; */
-
     position: relative;
 }
 
 .costBannerName {
     position: absolute;
-    top: 0px;
-    left: 0px;
-    /* border: 1px solid #000000;
-    background-color: white; */
-    /* width: 10px;
-    height: 10px; */
+    top: 0;
+    left: 0;
     padding-left: 5%;
     text-transform: capitalize;
 }
@@ -145,27 +110,26 @@ ul {
     width: 1em;
     height: 1em;
     padding-left: calc((15 / 216) * 100%);
-    /* background-color: white; */
-}
-
-.costBannerGoldText {
-    background-color: red;
 }
 
 .resources {
     height: calc((50 / 684) * 100%);
-    border: 1px solid black;
+    /* border: 0.1em solid black; */
+    padding: 1%;
     margin: 2%;
+    text-shadow: 1px 1px black;
 }
 
 .health {
     height: 50%;
     position: relative;
-    /* border: 1px solid red; */
+    /* text-shadow: 1px 1px black; */
+    border: 0.1em solid black;
 }
 
 .healthBar {
     height: 100%;
+    /* border: 0.1em solid black; */
     background-color: green;
 }
 
@@ -177,24 +141,21 @@ ul {
 .healthText,
 .manaText {
     margin: 0;
-    /* border: 1px solid pink; */
     position: absolute;
     top: 0;
     left: 50%;
-
     transform: translateX(-50%);
 }
 
 .mana {
     height: 50%;
     position: relative;
-    /* border: 1px solid red; */
+    border: 0.1em solid black;
+    border-top: 0;
 }
 
 .firstRowSquares {
     height: calc((85 / 684) * 100%);
-    /* border: 1px solid pink; */
-    /* background-color: pink; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -202,7 +163,6 @@ ul {
 }
 
 .squares {
-    /* border: 1px solid black; */
     height: calc((57 / 85) * 100%);
     width: calc((170 / 216) * 100%);
     display: flex;
@@ -210,53 +170,32 @@ ul {
 }
 
 .square {
-    width: calc((55 / 216) * 100%);
-    height: calc((50 / 87) * 100%);
-    width: 26%;
-    width: 26%;
-    height: 100%;
-    border: 1px solid #184542;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-
     text-transform: capitalize;
-}
 
-.ability {
-    width: 100%;
+    width: 26%;
+    width: calc((56 / 216) * 100%);
     height: 100%;
-}
 
-.squareIcon {
-    object-fit: contain;
-    width: 100%;
-    height: 100%;
-}
+    border: 0.1em solid #184542;
+    box-shadow: 0.1em 0.1em black;
 
-.positionSquare {
-    width: calc((55 / 216) * 100%);
-    height: calc((50 / 87) * 100%);
-    width: 30%;
-    height: 100%;
-    border: 1px solid #184542;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    white-space: nowrap;
 }
 
 .positionIcon {
     width: 100%;
     height: 100%;
-    /* object-fit: contain; */
+    object-fit: contain;
 }
 
 .rangeIcon {
     width: 50%;
     height: 50%;
 }
+
 .unused {
     height: calc((180 / 684) * 100%);
     /* border: 1px solid yellow; */
@@ -269,27 +208,13 @@ ul {
 }
 
 .statsBox {
-    /* border: 1px solid green; */
-    /* background-color: green; */
-    margin: 5%;
-    width: 100%;
-
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-}
-
-.statItem {
-    /* border: 1px solid black; */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 100%;
+    width: 100%;
+    margin: 0 4% 10%;
 }
 
 .statIcon {
-    /* max-width: 100%; */
     height: 23%;
 }

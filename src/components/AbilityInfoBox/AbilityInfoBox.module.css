@@ -7,27 +7,18 @@
     position: absolute;
 
     top: calc((346 / 1080) * 100%);
-    right: calc((245 / 1920) * 100%);
+
     right: 14.2%;
+    right: calc((275 / 1920) * 100%);
 
     width: calc((713 / 1920) * 100%);
     min-height: 25%;
     max-height: 60%;
 }
 
-/* .abilityInfoBox img {
-    margin-bottom: 0%;
-    margin: 1%;
-
-    margin: 0 0.5% -0.4%;
-
-    width: 2.2%;
-} */
-
 .header {
     max-height: 30%;
     width: 100%;
-
     display: flex;
     padding: 1%;
 }
@@ -43,9 +34,7 @@
     flex-direction: column;
     justify-content: flex-start;
     padding-left: 2%;
-
     margin-top: 0;
-
     font-weight: bold;
 }
 
@@ -56,11 +45,7 @@
 }
 
 .mainBody img {
-    margin-bottom: 0%;
-    margin: 1%;
-
     margin: 0 0.5% -0.4%;
-
     width: 2.2%;
 }
 
@@ -71,10 +56,6 @@
 }
 
 .details img {
-    margin-bottom: 0%;
-    margin: 1%;
-
     margin: 0 0.5% -0.4%;
-
     width: 2.2%;
 }

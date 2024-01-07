@@ -1,24 +1,5 @@
-.dangerousIcon {
-    background-color: red;
-}
-
-.dangerDiv img {
-    width: 3%;
-}
-
-.testText123 {
-    background-color: black;
-}
-
-.statsTestIcon {
-    /* height: 10%; */
-    width: 0.7%;
-    object-fit: fill;
-}
-
 .App {
     text-align: center;
-    /* border: 1px solid black; */
     height: 100vh;
 }
 
@@ -41,11 +22,6 @@
     height: calc((445 / 1080) * 100%);
 }
 
-.testDisplay {
-    color: white;
-    background-color: black;
-}
-
 .shopList {
     display: flex;
     justify-content: space-between;
@@ -65,26 +41,4 @@
 
     width: 52.0833%;
     width: calc((1000 / 1920) * 100%);
-}
-
-.unitInfoPortrait {
-    width: 20%;
-    height: 30%;
-}
-
-.testContainer {
-    background-color: black;
-    /* width: 100px; */
-    width: 5%;
-    height: 20px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-}
-
-.testIcon {
-    width: 1em;
-    height: 1em;
-    /* padding-left: 10px; */
 }

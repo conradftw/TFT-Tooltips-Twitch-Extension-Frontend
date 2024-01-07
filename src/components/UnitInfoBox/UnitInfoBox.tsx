@@ -120,7 +120,9 @@ const UnitInfoBox = ({
                         className={styles.image1}
                     />
 
-                    <div className={styles.costBannerName}>{unit.name}</div>
+                    <div className={styles.costBannerName}>
+                        {unit.displayName}
+                    </div>
                     <div className={styles.costBannerCost}>
                         <img
                             src="general/gold_icon.png"
