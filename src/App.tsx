@@ -109,9 +109,6 @@ function App() {
     );
 
     const handleResize = () => {
-        console.log(
-            `Resized: ${document.body.clientWidth} x ${document.body.clientHeight}`
-        );
         setOverlayResolution({
             width: document.body.clientWidth,
             height: document.body.clientHeight,
@@ -150,7 +147,9 @@ function App() {
             message: string
         ) {
             const data = parseCompressedJsonToCompactGamestate(message);
-            // console.log(data);
+
+            console.log(data);
+
             setGamestate(expandCompactGamestate(data));
 
             window.clearTimeout(receivedDataTimer);
@@ -176,9 +175,7 @@ function App() {
             if (abilitiesResponse.ok && traitsResponse.ok) {
                 const abilitiesData = await abilitiesResponse.json();
                 const traitsData = await traitsResponse.json();
-                console.log(abilitiesData);
                 setAbilityDetails(abilitiesData);
-                console.log(traitsData);
                 setTraitDetails(traitsData);
             } else {
                 console.error("Trouble fetching from github");
@@ -190,7 +187,7 @@ function App() {
         getAbilityAndTraitDetails();
 
         if (window.Twitch.ext) {
-            console.log("Twitch Extension Helper is set up");
+            // console.log("Twitch Extension Helper is set up");
             window.Twitch.ext.onAuthorized(function (auth) {
                 // console.log(
                 //     "The JWT that will be passed to the EBS is",
@@ -220,9 +217,7 @@ function App() {
 
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
-            console.log("Mouse Click Start");
-
-            console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
+            // console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 
             const x_1920 = (event.clientX * 1920) / overlayResolution.width;
             const y_1080 = (event.clientY * 1080) / overlayResolution.height;
@@ -260,29 +255,20 @@ function App() {
                     }
                 }
 
-                console.log(hoveredUnit);
+                // console.log(hoveredUnit);
 
                 if (Object.keys(hoveredUnit).length && abilityDetails) {
-                    console.log("Creating unit to display");
-
                     const unitInfo = createUnitInfo(
                         hoveredUnit,
                         abilityDetails
                     );
-                    console.log(unitInfo);
-
                     const unitStatsInfo = createUnitStatsInfo(hoveredUnit);
-                    // console.log(unitStatsInfo);
 
                     setUnitToDisplay(unitInfo);
                     setAbilityToDisplay(unitInfo.ability);
                     setStatsToDisplay(unitStatsInfo);
                 }
-            } else {
-                console.log("Gamestate contains no units...");
             }
-
-            console.log("Mouse Click ENd");
         };
 
         document.addEventListener("click", handleMouseMove);
@@ -300,8 +286,6 @@ function App() {
                 traitIndex < gamestate.traits.length &&
                 traitDetails
             ) {
-                // console.log(gamestate.traits);
-                // console.log("traitIndex is: " + traitIndex);
                 setTraitToDisplay(
                     createTraitInfo(gamestate.traits[traitIndex], traitDetails)
                 );
@@ -311,7 +295,7 @@ function App() {
             console.error("TraitIndex: " + traitIndex);
             console.error("TraitList: ");
             console.error(gamestate?.traits);
-            // log to server
+            // log to server?
             console.error(error);
         }
     }, [traitIndex, gamestate?.traits, traitDetails]);
@@ -323,8 +307,6 @@ function App() {
                 shopUnitIndex < 5 &&
                 gamestate?.shopUnits.length
             ) {
-                // console.log(gamestate.shopUnits);
-                // console.log("shopIndex is: " + shopUnitIndex);
                 const shopUnit = gamestate.shopUnits[shopUnitIndex];
 
                 if (shopUnit.cost && shopUnit.shopUnitName !== "sold") {
@@ -332,7 +314,6 @@ function App() {
                         createShopUnitInfo(gamestate.shopUnits[shopUnitIndex])
                     );
                 } else {
-                    console.log("Shop: shop slot is sold");
                     setShopUnitToDisplay(null);
                 }
             }
@@ -348,9 +329,6 @@ function App() {
     useEffect(() => {
         try {
             if (hoveredUnitTrait && gamestate?.traits.length && traitDetails) {
-                // console.log(gamestate.traits);
-                // console.log("hoveredUnitTrait is: " + hoveredUnitTrait);
-
                 let unitTrait = { count: 0, traitName: hoveredUnitTrait };
 
                 for (const trait of gamestate.traits) {
