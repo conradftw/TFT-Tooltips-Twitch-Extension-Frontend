@@ -255,8 +255,6 @@ function App() {
                     }
                 }
 
-                // console.log(hoveredUnit);
-
                 if (Object.keys(hoveredUnit).length && abilityDetails) {
                     const unitInfo = createUnitInfo(
                         hoveredUnit,

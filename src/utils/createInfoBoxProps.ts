@@ -167,25 +167,3 @@ export const createUnitStatsInfo = (unit: UnitType): UnitStatsInfo => {
 
     return unitStatsInfo;
 };
-/*
-
-
-    stats: {
-        [stat_type: string]: StatType;
-    };
-
-
-
-    export type StatInfo = {
-        type: string;
-        header: string;
-        description: string;
-        mainBody: string;
-    };
-
-    export type UnitStatsInfo = {
-        [statType: string]: StatInfo;
-    };
-
-};
-*/
