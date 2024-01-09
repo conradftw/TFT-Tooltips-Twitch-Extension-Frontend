@@ -72,7 +72,9 @@ export const statDetails: {
         mainBody: (stat: StatType): string => {
             const baseAs = stat.base.toFixed(2);
             const bonusAs = stat.bonus.toFixed(2);
-            const totalAs = parseFloat(baseAs) + parseFloat(bonusAs);
+            const totalAs = (parseFloat(baseAs) * parseFloat(bonusAs)).toFixed(
+                2
+            );
 
             const statText = `<p>Current Attack Speed: <span class="bonusStat">${
                 totalAs + ""

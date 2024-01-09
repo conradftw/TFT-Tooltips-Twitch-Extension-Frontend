@@ -62,8 +62,9 @@ const UnitInfoBox = ({
                     alt=""
                     className={styles.statIcon}
                 />
-
-                {Math.round(stat.total * 100) / 100}
+                {stat.total === Math.floor(stat.total)
+                    ? Math.round(stat.total)
+                    : stat.total.toFixed(2)}
                 {statType === "crit_chance" || statType === "crit_damage"
                     ? "%"
                     : ""}
