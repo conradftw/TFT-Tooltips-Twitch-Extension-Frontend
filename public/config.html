@@ -3,27 +3,35 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>xdd</title>
+        <title>TFT Tooltips Configuration Page</title>
+        <link rel="stylesheet" href="config.css" />
     </head>
-    <body style="background: white">
+    <body>
         <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
-        <p>
-            You've successfully installed the TFT Tooltips Twitch Extension for
-            your channel!<br />
-            To enable the extension, click "Activate" then "Set as Overlay 1"
-            <br />
-            You're now all done with the configuration on Twitch!
-        </p>
-        <br />
-        <p>
-            However, for this extension to work, you will also need install and
-            run the TFT Tooltips Companion App alongside your TFT game. <br />
-            Check out the
-            <a
-                href="https://github.com/conradftw/TFT-Tooltips-Twitch-Extension-Companion/blob/main/README.md#setup"
-                >setup guide on Github
-            </a>
-            for more information.
-        </p>
+        <main class="configContainer">
+            <div class="instructions">
+                <header class="congratsHeader">
+                    You've successfully installed the TFT Tooltips Twitch
+                    Extension for your channel!
+                </header>
+                <br />
+                <p>
+                    1. To enable the extension, click "Activate" then "Set as
+                    Overlay 1"
+                    <br />
+                    You're now all done with the configuration on Twitch!
+                </p>
+                <p>
+                    2. However, for this extension to work, you will also need
+                    install and run the TFT Tooltips Companion App alongside
+                    your TFT game. Check out the
+                    <a
+                        href="https://github.com/conradftw/TFT-Tooltips-Twitch-Extension-Companion/blob/main/README.md#setup"
+                        >setup guide on Github
+                    </a>
+                    for more information (right click and open in a new tab).
+                </p>
+            </div>
+        </main>
     </body>
 </html>

@@ -5621,9 +5621,9 @@ export const championDetails: {
             const totalDamage = adDamage + apDamage;
 
             const abilityMainText = `<p> 
-            <b>Passive</b>: XDD Yasuo permanently gains <span class="effectText">${Math.round(
+            <b>Passive</b>: Yasuo permanently gains <span class="effectText">${Math.round(
                 permanentAdGain * 100
-            )}%</span> Attack Damage when he kills an enemy champion. (Current: 0.0% <img src="general/stats/attack_damage.png"/>)<br/>
+            )}%</span> Attack Damage when he kills an enemy champion.<br/>
             <br/>
             <b>Active:</b> Deal <span class="physicalDamage">${Math.round(
                 totalDamage
