@@ -147,9 +147,6 @@ function App() {
             message: string
         ) {
             const data = parseCompressedJsonToCompactGamestate(message);
-
-            console.log(data);
-
             setGamestate(expandCompactGamestate(data));
 
             window.clearTimeout(receivedDataTimer);
