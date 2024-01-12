@@ -28,7 +28,7 @@ export const championDetails: {
     ahri: {
         name: "ahri",
         displayName: "Ahri",
-        cost: 1,
+        cost: 4,
         traits: ["kda", "spellweaver"],
         position_type: "back",
         getAbilityName: () => {
@@ -2499,7 +2499,7 @@ export const championDetails: {
     kennen: {
         name: "kennen",
         displayName: "Kennen",
-        cost: 2,
+        cost: 1,
         traits: ["truedamage", "superfan", "guardian"],
         position_type: "front",
         getAbilityName: () => {
@@ -5665,7 +5665,7 @@ export const championDetails: {
         },
         getAbilityMainTextWithDefaults: () => {
             const abilityMainText = `<p> 
-            <b>Passive</b>: Yasuo permanently gains <span class="effectText">???%</span> Attack Damage when he kills an enemy champion. (Current: 0.0% <img src="general/stats/attack_damage.png"/>)<br/>
+            <b>Passive</b>: Yasuo permanently gains <span class="effectText">???%</span> Attack Damage when he kills an enemy champion.<br/>
             <br/>
             <b>Active:</b> Deal <span class="physicalDamage">??? (<img src="general/stats/attack_damage.png"/>)</span> to the current target.<br/>
             <br/>
