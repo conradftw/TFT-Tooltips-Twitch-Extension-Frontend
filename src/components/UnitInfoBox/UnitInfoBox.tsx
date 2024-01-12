@@ -76,9 +76,14 @@ const UnitInfoBox = ({
     const getUnitSellCost = () => {
         if (!unit.cost) return 0;
 
+        if (unit.star_level === 1) {
+            return unit.cost;
+        }
+
         if (unit.cost === 1) {
             return Math.pow(3, unit.star_level - 1);
         }
+
         return unit.cost * Math.pow(3, unit.star_level - 1) - 1;
     };
 

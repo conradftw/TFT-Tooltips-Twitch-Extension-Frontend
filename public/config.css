@@ -26,3 +26,7 @@
     font-weight: 700;
     font-size: xx-large;
 }
+
+.instructions a:visited {
+    color: lightblue;
+}
