@@ -97,7 +97,12 @@ const UnitInfoBox = ({
     // throw new Error();
 
     return (
-        <div className={styles.border1}>
+        <div
+            className={styles.border1}
+            onClick={(event) => {
+                event.stopPropagation();
+            }}
+        >
             <div className={styles.unitInfoBox}>
                 <div className={styles.starLevelContainer}>
                     {unit.star_level && (

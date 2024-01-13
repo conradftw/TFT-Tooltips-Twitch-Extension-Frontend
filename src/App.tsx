@@ -120,7 +120,18 @@ function App() {
         });
     };
 
-    const clearUnitRelatedInfoBoxes = () => {
+    const clearAllState = () => {
+        setGamestate(null);
+
+        setTraitIndex(TRAIT_NOT_HOVERED);
+        setShopUnitIndex(SHOP_UNIT_NOT_HOVERED);
+        setHoveredTrait(UNIT_TRAIT_NOT_HOVERED);
+        setShowAbilityInfoBox(UNIT_ABILITY_NOT_HOVERED);
+        setHoveredStat(UNIT_STAT_NOT_HOVERED);
+
+        setTraitToDisplay(null);
+        setShopUnitToDisplay(null);
+        setUnitTraitToDisplay(null);
         setUnitToDisplay(null);
         setAbilityToDisplay(null);
         setStatsToDisplay(null);
@@ -128,23 +139,6 @@ function App() {
 
     useEffect(() => {
         let receivedDataTimer: number;
-
-        const clearAllState = () => {
-            setGamestate(null);
-
-            setTraitIndex(TRAIT_NOT_HOVERED);
-            setShopUnitIndex(SHOP_UNIT_NOT_HOVERED);
-            setHoveredTrait(UNIT_TRAIT_NOT_HOVERED);
-            setShowAbilityInfoBox(UNIT_ABILITY_NOT_HOVERED);
-            setHoveredStat(UNIT_STAT_NOT_HOVERED);
-
-            setTraitToDisplay(null);
-            setShopUnitToDisplay(null);
-            setUnitTraitToDisplay(null);
-            setUnitToDisplay(null);
-            setAbilityToDisplay(null);
-            setStatsToDisplay(null);
-        };
 
         function handleListen(
             target: string,
@@ -243,8 +237,6 @@ function App() {
             const x_1920 = (event.clientX * 1920) / overlayResolution.width;
             const y_1080 = (event.clientY * 1080) / overlayResolution.height;
 
-            clearUnitRelatedInfoBoxes();
-
             if (gamestate?.units.length) {
                 let hoveredUnit = {} as UnitType;
                 for (const unit of gamestate.units) {
@@ -286,6 +278,8 @@ function App() {
                     setUnitToDisplay(unitInfo);
                     setAbilityToDisplay(unitInfo.ability);
                     setStatsToDisplay(unitStatsInfo);
+                } else {
+                    clearAllState();
                 }
             }
         };
