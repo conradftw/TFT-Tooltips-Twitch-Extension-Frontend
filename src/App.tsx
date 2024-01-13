@@ -26,6 +26,7 @@ import { expandCompactGamestate } from "./utils/expandCompactGamestate";
 import { isPointInsideBoundingBox } from "./utils/isPointInsideBoundingBox";
 import { parseCompressedJsonToCompactGamestate } from "./utils/parseCompressedJsonToCompactGamestate";
 import { ErrorBoundary } from "react-error-boundary";
+import { delay } from "./utils/delay";
 
 const TRAIT_NOT_HOVERED = -1;
 const SHOP_UNIT_NOT_HOVERED = -1;
@@ -67,6 +68,10 @@ function App() {
     const [traitDetails, setTraitDetails] = useState<TraitDetailsType | null>(
         null
     );
+
+    const [streamDelay, setStreamDelay] = useState<number | undefined>(0);
+    const [isDataReady, setIsDataReady] = useState(false);
+    const [pubsubMsg, setPubsubMsg] = useState("");
 
     const [gamestate, setGamestate] = useState<GamestateType | null>(null);
 
@@ -146,8 +151,8 @@ function App() {
             contentType: string,
             message: string
         ) {
-            const data = parseCompressedJsonToCompactGamestate(message);
-            setGamestate(expandCompactGamestate(data));
+            setIsDataReady(true);
+            setPubsubMsg(message);
 
             window.clearTimeout(receivedDataTimer);
             receivedDataTimer = window.setTimeout(() => {
@@ -195,6 +200,10 @@ function App() {
             });
 
             window.Twitch.ext.listen("broadcast", handleListen);
+
+            window.Twitch.ext.onContext(function (context) {
+                setStreamDelay(context.hlsLatencyBroadcaster);
+            });
         } else {
             console.error(
                 "Unable to setup the Twitch Extension Helper Library"
@@ -211,6 +220,21 @@ function App() {
             window.clearTimeout(receivedDataTimer);
         };
     }, []);
+
+    useEffect(() => {
+        const setGamestateAfterDelay = async () => {
+            if (streamDelay) {
+                await delay(streamDelay * 1000);
+            }
+            const data = parseCompressedJsonToCompactGamestate(pubsubMsg);
+            setGamestate(expandCompactGamestate(data));
+        };
+
+        if (isDataReady) {
+            setIsDataReady(false);
+            setGamestateAfterDelay();
+        }
+    }, [isDataReady, streamDelay, pubsubMsg]);
 
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {

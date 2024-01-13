@@ -5028,7 +5028,7 @@ export const championDetails: {
             const baseCardCount = ability["CardCount"][0];
 
             const shred = ability["MRShred"][0];
-            const headlinerCards = ability["CardHeadlinerBonusCardsCount"][0];
+            const headlinerCards = ability["HeadlinerBonusCards"][0];
 
             const damage =
                 unit.stats["ability_power"].total *
